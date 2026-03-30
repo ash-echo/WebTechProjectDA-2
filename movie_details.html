@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Youth - Auteur Cinema</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "on-secondary": "#690000",
+                "on-primary-fixed": "#410000",
+                "on-primary": "#690000",
+                "on-tertiary-fixed": "#001b3e",
+                "secondary-fixed-dim": "#ffb4a8",
+                "secondary-fixed": "#ffdad4",
+                "surface": "#131313",
+                "inverse-surface": "#e5e2e1",
+                "surface-dim": "#131313",
+                "on-primary-container": "#fffdff",
+                "surface-container-lowest": "#0e0e0e",
+                "on-surface-variant": "#e8bcb5",
+                "surface-container": "#201f1f",
+                "on-tertiary-container": "#fffcff",
+                "tertiary-container": "#0073e2",
+                "inverse-on-surface": "#313030",
+                "surface-container-low": "#1c1b1b",
+                "secondary-container": "#90190f",
+                "on-secondary-container": "#ff9f90",
+                "on-background": "#e5e2e1",
+                "tertiary-fixed": "#d6e3ff",
+                "on-surface": "#e5e2e1",
+                "surface-container-highest": "#353534",
+                "inverse-primary": "#c00000",
+                "surface-container-high": "#2a2a2a",
+                "surface-bright": "#393939",
+                "on-secondary-fixed": "#410000",
+                "primary-fixed-dim": "#ffb4a8",
+                "on-error-container": "#ffdad6",
+                "background": "#131313",
+                "surface-tint": "#ffb4a8",
+                "on-error": "#690005",
+                "on-secondary-fixed-variant": "#8c160d",
+                "outline-variant": "#5e3f3a",
+                "error-container": "#93000a",
+                "primary-fixed": "#ffdad4",
+                "primary-container": "#e71a0f",
+                "secondary": "#ffb4a8",
+                "tertiary": "#aac7ff",
+                "primary": "#ffb4a8",
+                "error": "#ffb4ab",
+                "on-primary-fixed-variant": "#930000",
+                "on-tertiary": "#002f64",
+                "tertiary-fixed-dim": "#aac7ff",
+                "on-tertiary-fixed-variant": "#00458d",
+                "surface-variant": "#353534",
+                "outline": "#af8781"
+              },
+              fontFamily: {
+                "headline": ["Plus Jakarta Sans"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "1.5rem", "2xl": "2rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-gradient {
+            background: linear-gradient(to bottom, rgba(19, 19, 19, 0) 0%, rgba(19, 19, 19, 0.8) 50%, rgba(19, 19, 19, 1) 100%);
+        }
+        .glass-panel {
+            background: rgba(53, 53, 52, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar (Shared Component) -->
+<nav class="fixed top-0 w-full z-50 bg-zinc-950/80 backdrop-blur-xl shadow-2xl shadow-black/40">
+<div class="flex items-center justify-between px-8 py-4 w-full max-w-screen-2xl mx-auto">
+<div class="flex items-center gap-12">
+<span class="text-2xl font-black tracking-tighter text-red-600 uppercase font-headline">AUTEUR</span>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-red-500 font-bold border-b-2 border-red-500 pb-1 font-['Inter'] text-sm tracking-wide" href="#">Movies</a>
+<a class="text-zinc-400 font-medium hover:text-zinc-100 transition-colors font-['Inter'] text-sm tracking-wide" href="#">Stream</a>
+<a class="text-zinc-400 font-medium hover:text-zinc-100 transition-colors font-['Inter'] text-sm tracking-wide" href="#">Events</a>
+<a class="text-zinc-400 font-medium hover:text-zinc-100 transition-colors font-['Inter'] text-sm tracking-wide" href="#">Plays</a>
+<a class="text-zinc-400 font-medium hover:text-zinc-100 transition-colors font-['Inter'] text-sm tracking-wide" href="#">Sports</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center bg-zinc-800/50 rounded-lg px-4 py-2 gap-3 transition-all hover:bg-zinc-800">
+<span class="material-symbols-outlined text-zinc-400 text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm text-zinc-200 placeholder-zinc-500 w-64" placeholder="Search for movies..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-zinc-300 font-medium text-sm hover:text-zinc-100 transition-colors">New York</button>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-xl font-bold text-sm scale-95 active:scale-90 duration-200">Sign In</button>
+<span class="material-symbols-outlined text-zinc-300 cursor-pointer p-2 hover:bg-zinc-800/50 rounded-lg transition-all">menu</span>
+</div>
+</div>
+</div>
+</nav>
+<main class="relative pt-0">
+<!-- Hero Background Section -->
+<section class="relative h-[870px] w-full overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="Cinematic background" class="w-full h-full object-cover" data-alt="Wide cinematic shot of a luxury mountain resort pool at sunset with dramatic orange and teal lighting and soft mist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjM9WHo2k8KMWA8hY91JUwnZkKiyfwhqMlwq90KdDT8Lvvzu6y5o2JvgC_r6eHhy7C9ZbsRi8zW7R6eFZRmtD4yfXcYPfX4S5JUDL3RNnk4FSNmXpw6wl8wVUzn5Lc16ROrNFO0fYrIkgXaeOEPQVo2OpGp7wRxk9-LxlbSbdwCH3BDS6ThrGeSB2sz8h_wkyECleFJOhXnRL1-D_tfhK4G4a7AnAFWUgRMrWg_mzDO8h530oPltOdlNqms9elgDnVSeRMhaJatgY"/>
+<div class="absolute inset-0 editorial-gradient"></div>
+</div>
+<!-- Content Overlay -->
+<div class="relative z-10 h-full flex items-end pb-16 max-w-screen-2xl mx-auto px-8 md:px-12">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-12 w-full items-end">
+<!-- Left Column: Poster -->
+<div class="hidden md:block md:col-span-4 lg:col-span-3">
+<div class="group relative aspect-[2/3] w-full rounded-2xl overflow-hidden shadow-2xl shadow-black/60 transform -rotate-1 hover:rotate-0 transition-transform duration-500">
+<img alt="Movie Poster" class="w-full h-full object-cover" data-alt="Abstract cinematic movie poster with high contrast lighting, featuring a silhouette of an older man looking at a mountain range" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqt-huasoSgpXzwj8lTBVvYkgdUcuoRp_VmpUEc8V8i6oeqD5fvWQHVm2Z0b4MmNlZlhpfqMvSQ488OV928ZKk8fs-meJHLV9omDNnvW--k2-ZCTWlgJ00kuuL6YXkOKM_pYilL4oL97DD-Av5b_BXPaUu_pid4xucNQ_oq-NQ0m2-QuvxY2H9PQDiGih0CO2akDtHfKd9Rs06mqA8PD5wO8Of38YAXyPX5vB5Ixed2KeF6apVA0xD1tmhtNx_UBBvKGdolYW2mrs"/>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+<button class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30 hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-white text-4xl" data-weight="fill">play_arrow</span>
+</button>
+</div>
+<div class="absolute bottom-4 left-0 right-0 text-center">
+<span class="bg-black/60 backdrop-blur-md text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest font-bold">Trailer</span>
+</div>
+</div>
+</div>
+<!-- Right Column: Details -->
+<div class="col-span-1 md:col-span-8 lg:col-span-9 flex flex-col items-start gap-6">
+<div class="space-y-2">
+<div class="flex items-center gap-3">
+<span class="bg-primary-container text-on-primary-container text-[10px] font-black px-2 py-0.5 rounded tracking-tighter uppercase">Premiering</span>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm" data-weight="fill">star</span>
+<span class="font-headline font-bold text-lg">8.9/10</span>
+<span class="text-zinc-400 text-sm font-medium ml-1">19.6K+ Votes</span>
+</div>
+</div>
+<h1 class="text-6xl md:text-8xl font-headline font-black tracking-tighter text-on-surface uppercase leading-[0.9]">Youth</h1>
+</div>
+<div class="flex flex-wrap items-center gap-4">
+<div class="glass-panel px-4 py-2 rounded-xl flex items-center gap-2">
+<span class="material-symbols-outlined text-zinc-400 text-sm">theaters</span>
+<span class="text-sm font-semibold">Comedy, Drama</span>
+</div>
+<div class="glass-panel px-4 py-2 rounded-xl flex items-center gap-2">
+<span class="material-symbols-outlined text-zinc-400 text-sm">calendar_today</span>
+<span class="text-sm font-semibold">24 May, 2015</span>
+</div>
+<div class="glass-panel px-4 py-2 rounded-xl flex items-center gap-2">
+<span class="material-symbols-outlined text-zinc-400 text-sm">language</span>
+<span class="text-sm font-semibold">English, Italian</span>
+</div>
+<div class="glass-panel px-4 py-2 rounded-xl flex items-center gap-2">
+<span class="material-symbols-outlined text-zinc-400 text-sm">schedule</span>
+<span class="text-sm font-semibold">2h 4m</span>
+</div>
+</div>
+<div class="flex items-center gap-6 mt-4">
+                            <button onclick="window.location.href='seat_selection.html'" class="bg-primary-container text-on-primary-container px-12 py-5 rounded-2xl font-headline font-black text-xl tracking-tight shadow-xl shadow-red-900/20 hover:brightness-110 active:scale-95 transition-all">
+                                Book Tickets
+                            </button>
+<button class="glass-panel text-on-surface p-5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+<button class="glass-panel text-on-surface p-5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Body Content -->
+<section class="max-w-screen-2xl mx-auto px-8 md:px-12 py-20 bg-surface">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-20">
+<!-- Main Content Area -->
+<div class="lg:col-span-8 space-y-16">
+<!-- About Section -->
+<div class="space-y-6">
+<div class="flex items-center gap-4">
+<h2 class="text-3xl font-headline font-extrabold tracking-tight">About the Movie</h2>
+<div class="h-px flex-1 bg-surface-container-highest"></div>
+</div>
+<p class="text-zinc-400 text-lg leading-relaxed max-w-3xl">
+                            A retired orchestra conductor is on holiday in the Alps with his daughter and his best friend, a film director, when he receives an invitation from Queen Elizabeth II to perform for Prince Philip's birthday. The film explores the eternal struggle between age and youth, past and future, life and death.
+                        </p>
+</div>
+<!-- Top Offers Section -->
+<div class="space-y-8">
+<div class="flex items-center justify-between">
+<h2 class="text-3xl font-headline font-extrabold tracking-tight">Top Offers</h2>
+<button class="text-primary text-sm font-bold uppercase tracking-widest hover:underline decoration-2 underline-offset-8">View All</button>
+</div>
+<div class="flex overflow-x-auto gap-6 no-scrollbar pb-4">
+<!-- Offer Card 1 -->
+<div class="min-w-[320px] bg-surface-container-low p-6 rounded-2xl flex items-start gap-4 hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-2xl">credit_card</span>
+</div>
+<div class="space-y-1">
+<h3 class="font-bold text-lg">Bank of Cinema Offer</h3>
+<p class="text-zinc-500 text-sm">Get up to 25% discount on movie tickets using your ICICI Bank Credit Card.</p>
+</div>
+</div>
+<!-- Offer Card 2 -->
+<div class="min-w-[320px] bg-surface-container-low p-6 rounded-2xl flex items-start gap-4 hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-xl bg-tertiary/10 flex items-center justify-center text-tertiary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-2xl">fastfood</span>
+</div>
+<div class="space-y-1">
+<h3 class="font-bold text-lg">Combo Delight</h3>
+<p class="text-zinc-500 text-sm">Buy 2 tickets and get a medium popcorn combo free on weekdays.</p>
+</div>
+</div>
+<!-- Offer Card 3 -->
+<div class="min-w-[320px] bg-surface-container-low p-6 rounded-2xl flex items-start gap-4 hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-2xl">confirmation_number</span>
+</div>
+<div class="space-y-1">
+<h3 class="font-bold text-lg">First Timer Pack</h3>
+<p class="text-zinc-500 text-sm">Use code WELCOME50 to get $50 off on your first movie booking.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Cast & Crew -->
+<div class="space-y-8">
+<div class="flex items-center gap-4">
+<h2 class="text-3xl font-headline font-extrabold tracking-tight">Cast &amp; Crew</h2>
+<div class="h-px flex-1 bg-surface-container-highest"></div>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-8">
+<div class="text-center space-y-3">
+<div class="aspect-square rounded-full overflow-hidden border-2 border-surface-container-highest p-1">
+<img alt="Michael Caine" class="w-full h-full object-cover rounded-full" data-alt="Headshot of a distinguished elderly man with white hair and glasses, looking thoughtful" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUXUo64srLooViCfBNFDo-f084Cpx24SZn4WiiCi0eN54aEvn3syLv5v7lKH_2S6fbIn0yNiCKS0uGE5tc3F04k1DA9PHF0eQnMki9r1nSUTBq4j2WUAfHp6Yja-j_MhpqaSD0vx3updWBH8OuK_JPRWBFdkVe9VklH8T1f4Ww7Y5bljh8Gm7oCvJadSqlmbRV3nrCAEnFIv_5QoUpfs_GOpKYgO6iL7uJlFRqXi_trmUMyr6yZZsn4gxv_ftcQZ-9mXSz4Xk5jec"/>
+</div>
+<div>
+<p class="font-bold text-sm">Michael Caine</p>
+<p class="text-zinc-500 text-xs">as Fred Ballinger</p>
+</div>
+</div>
+<div class="text-center space-y-3">
+<div class="aspect-square rounded-full overflow-hidden border-2 border-surface-container-highest p-1">
+<img alt="Rachel Weisz" class="w-full h-full object-cover rounded-full" data-alt="Close up portrait of an elegant woman with dark hair and striking features, soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCn__vWNYIiza5JcUZuSRTvVNoNSIxAKmhqJPG2aydh3w0bqKYqjhs4g_4-bYS5w8TMOFGPTMVQtdJ0bdwOVjpBF56nfC0MrAH_RArD8iPLUhdhR8WoXPljVQfl9pZ6xaw1R0CMGlnalrd1d97T45kwtR9HXviOcgykOWleBTvgTJLpxr_VxAv82n5AEa6I7pzlDLKAN58ygW8-VnPmZ2AYiL3hs-HUDIZwtw_wkQszHWdSmF7ELZF2G-8m-z1aIgmthEsCtZhT1o0"/>
+</div>
+<div>
+<p class="font-bold text-sm">Rachel Weisz</p>
+<p class="text-zinc-500 text-xs">as Lena Ballinger</p>
+</div>
+</div>
+<div class="text-center space-y-3">
+<div class="aspect-square rounded-full overflow-hidden border-2 border-surface-container-highest p-1">
+<img alt="Harvey Keitel" class="w-full h-full object-cover rounded-full" data-alt="Portrait of a seasoned male actor with sharp features and grey hair" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD76pGyfYbFePxATq18zZefgPCUTZq-hQ_QODER0rY9cV9rnyITDTWlHT9JC_SyTzJ6QuFVWQPWNEF7YikDfg2BSP_yCa_BhKI7rUhQ2giAqPs6IC9i8Q2Nz09tFKRFnN0eFoTtk2AxytxHM03IRsFmMDTfuxnXXjVErZ47CPrMebO_iqNV73lkOAx7fRB3JqiXfcbe3NLtdEh0YI95_ftGwvTfAIIDFju1c1dI2pUQIkalBnDCv_IhM9vrI2iKnRJxWQMyz84HHWw"/>
+</div>
+<div>
+<p class="font-bold text-sm">Harvey Keitel</p>
+<p class="text-zinc-500 text-xs">as Mick Boyle</p>
+</div>
+</div>
+<div class="text-center space-y-3">
+<div class="aspect-square rounded-full overflow-hidden border-2 border-surface-container-highest p-1">
+<img alt="Paul Dano" class="w-full h-full object-cover rounded-full" data-alt="Headshot of a younger man with soulful eyes and wavy brown hair" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDidod8F9t2EhSQ6an2lpn93fKPwMyO0bL-nqwTOd1FIymb_hTN8LK238UbXgk71-HtPS97xudWspa0EyAtzASkvKMGEey8gdE5_FUZ67AAgoD8UF_KsaBy_lgg6evanq4SlICjW1huAOHjN-d5SBgBKsnK8rgJC63tkOAynwwkpUD-GV7m8Gg-7RyF7K5RU5IVUzOreZv5fV8IBNR4lc5ZUxCV5GUdkUBgwg9bncHMJ-edHRSnlf7luPlI-GkulZcM7EPg6bn91_4"/>
+</div>
+<div>
+<p class="font-bold text-sm">Paul Dano</p>
+<p class="text-zinc-500 text-xs">as Jimmy Tree</p>
+</div>
+</div>
+<div class="text-center space-y-3">
+<div class="aspect-square rounded-full overflow-hidden border-2 border-surface-container-highest p-1">
+<img alt="Paolo Sorrentino" class="w-full h-full object-cover rounded-full" data-alt="Portrait of a sophisticated man in his 50s with artistic flair" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvXTe1y_2ZzNp4HmEsoMQVostiUHOe29Zukh4wwzIXgewdXdRRoKPAxBfHRxo4FoLqQ47Gv04auP4ZfmIJ9OI1QBPVMpV6pepg1iWNVbe0t_qAEYzTSJLC16H7Ry93YV-2IIPmUsqBMwuHHKusqAsKhreqktT39QfAdWek8QZ8iNqq39XmHc13g-vHmwt7-3TO1Lp4nJOKh7yCuHmeC1ENiKeRWuD4miy_VznKXF94rFQ99G7iW9zqzOfKLaU64uVbRx9uIAR9aVk"/>
+</div>
+<div>
+<p class="font-bold text-sm">P. Sorrentino</p>
+<p class="text-zinc-500 text-xs">Director</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar Content -->
+<div class="lg:col-span-4 space-y-12">
+<!-- Similar Movies Bento -->
+<div class="space-y-6">
+<h2 class="text-2xl font-headline font-extrabold tracking-tight">Similar Movies</h2>
+<div class="grid grid-cols-2 gap-4">
+<div class="group relative aspect-[3/4] rounded-xl overflow-hidden cursor-pointer">
+<img alt="The Great Beauty" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Movie poster for an Italian drama featuring historical Roman architecture at night" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuijmzHD1TFN_Wc_odcLzPTOHrMW3Xc5Sy7oBz_L--NXoynKp3hX8ckadSo9Gy5qCqbjBpUhLJlimxzw5sq0BZ_1jAJb4gpwQLirH3XoZ_Mv140PKPZjKyWyBDtI2uzhHiv0_o6LgZFxB-QKTAuqsV00NJgPl2ztO9jfHWc0DF6BBeu-NztCSmk_oKTtzKWpuOm1fXQ9opE5zgmqNdHKyXi3GDgW_qcattqx-KK90q_WwDmA4a75hgtwMX5Z4bQmKhw0l0TTucvos"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+<p class="text-white text-sm font-bold">The Great Beauty</p>
+</div>
+</div>
+<div class="group relative aspect-[3/4] rounded-xl overflow-hidden cursor-pointer">
+<img alt="The Hand of God" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Atmospheric movie poster with a cinematic shot of Naples coastline during blue hour" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPS74F13S5d5Wu8DtsfVyWMpGfvXWkU9WPEQMZbnL708WOoKB1GIS_o3XUbXEvHqvvCedk2u3u3AhZWDefRXWXfJw3NhSUyUzOAAsxXq-XGAll3DS1k-rbm74aVbbepFI4L7gfwUbYCG1GViA-Ht_ra7rktvh8fUq_HIph3LQ42vOoYPX_gJMcpXgEEWBG3m4lPFbDfeZXaT3K6mUNH6VUjtxlrf1ozrDi9NHurk6hiRPe6JNEhqWjLsH14JBrIpb0eAgygMP0bmc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+<p class="text-white text-sm font-bold">The Hand of God</p>
+</div>
+</div>
+<div class="group relative aspect-[3/4] rounded-xl overflow-hidden cursor-pointer col-span-2">
+<img alt="Cinema Paradiso" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Heartwarming scene from a vintage cinema, soft golden light on an old film projector" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjQccyoNZD8u_TQnaO2juTFXBSZYNHJC9h2ikF-ewJsbTCoAWwzCMzsCOHjiECi78V4dLndu9zKkxXYBjJzaFcdUQwKeJdiG0DmFRGQQF1uHkPOiNB7yIwoIfOIuM_kl-zrFF5DJnXGQlm1T-hvm_k3IZ6nfIWGxHN2iLe4G3rcgxVIxTvi6aD6i45hof8ymPMudbRjRIVQBRwuqOBv02uP932t58NnhvZkoUzrDLauK46yuJIHBgqPPRATFw4I8MaKsyADzLMTz4"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+<p class="text-white text-sm font-bold">Cinema Paradiso</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Visual Quotes Card -->
+<div class="bg-primary/5 border border-primary/10 rounded-2xl p-8 space-y-4">
+<span class="material-symbols-outlined text-primary text-4xl">format_quote</span>
+<p class="text-xl font-headline font-bold leading-tight italic text-zinc-300">"You say that emotions are overrated. But emotions are all we have."</p>
+<div class="flex items-center gap-3 pt-2">
+<div class="w-8 h-px bg-primary"></div>
+<span class="text-xs font-bold uppercase tracking-widest text-zinc-500">Mick Boyle</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="bg-zinc-900 w-full pt-16 pb-8">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 px-12 max-w-7xl mx-auto">
+<div class="space-y-6">
+<span class="text-xl font-bold text-zinc-100 font-headline uppercase tracking-widest">AUTEUR CINEMA</span>
+<p class="text-zinc-500 text-sm font-['Inter'] leading-relaxed">
+                    Elevating the cinematic experience through curated selection and premium viewing environments.
+                </p>
+</div>
+<div class="space-y-6">
+<h4 class="text-red-600 font-['Inter'] text-sm tracking-wide uppercase font-semibold">General</h4>
+<ul class="space-y-3">
+<li><a class="text-zinc-500 hover:text-zinc-200 transition-colors hover:underline decoration-red-600 underline-offset-4 text-sm font-semibold uppercase" href="#">Cinemas</a></li>
+<li><a class="text-zinc-500 hover:text-zinc-200 transition-colors hover:underline decoration-red-600 underline-offset-4 text-sm font-semibold uppercase" href="#">Offers</a></li>
+<li><a class="text-zinc-500 hover:text-zinc-200 transition-colors hover:underline decoration-red-600 underline-offset-4 text-sm font-semibold uppercase" href="#">Gift Cards</a></li>
+</ul>
+</div>
+<div class="space-y-6">
+<h4 class="text-red-600 font-['Inter'] text-sm tracking-wide uppercase font-semibold">Support</h4>
+<ul class="space-y-3">
+<li><a class="text-zinc-500 hover:text-zinc-200 transition-colors hover:underline decoration-red-600 underline-offset-4 text-sm font-semibold uppercase" href="#">Help Center</a></li>
+<li><a class="text-zinc-500 hover:text-zinc-200 transition-colors hover:underline decoration-red-600 underline-offset-4 text-sm font-semibold uppercase" href="#">Feedback</a></li>
+<li><a class="text-zinc-500 hover:text-zinc-200 transition-colors hover:underline decoration-red-600 underline-offset-4 text-sm font-semibold uppercase" href="#">Contact Us</a></li>
+</ul>
+</div>
+<div class="space-y-6">
+<h4 class="text-red-600 font-['Inter'] text-sm tracking-wide uppercase font-semibold">Follow Us</h4>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-zinc-500 hover:text-red-500 cursor-pointer transition-colors">public</span>
+<span class="material-symbols-outlined text-zinc-500 hover:text-red-500 cursor-pointer transition-colors">alternate_email</span>
+<span class="material-symbols-outlined text-zinc-500 hover:text-red-500 cursor-pointer transition-colors">smart_display</span>
+</div>
+<p class="text-zinc-500 text-[10px] uppercase font-bold tracking-[0.2em] pt-4">© 2024 AUTEUR CINEMA. ALL RIGHTS RESERVED.</p>
+</div>
+</div>
+</footer>
+<!-- Fixed Booking Bar for Mobile -->
+<div class="md:hidden fixed bottom-0 left-0 right-0 glass-panel p-4 z-50 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-xs text-zinc-400 font-bold uppercase tracking-wider">From</span>
+<span class="text-xl font-headline font-black text-on-surface">$14.50</span>
+</div>
+        <button onclick="window.location.href='seat_selection.html'" class="bg-primary-container text-on-primary-container px-8 py-3 rounded-xl font-headline font-bold text-sm tracking-wide shadow-lg shadow-red-900/40">
+            Book Now
+        </button>
+</div>
+</body></html>

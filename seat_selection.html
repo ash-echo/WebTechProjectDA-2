@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AUTEUR - Seat Selection</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .seat-selected {
+            font-variation-settings: 'FILL' 1;
+        }
+        .glass-panel {
+            background: rgba(32, 31, 31, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .screen-curve {
+            perspective: 500px;
+        }
+        .screen-gradient {
+            background: linear-gradient(180deg, rgba(231, 26, 15, 0.3) 0%, rgba(231, 26, 15, 0) 100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary": "#690000",
+                        "on-primary-fixed": "#410000",
+                        "on-primary": "#690000",
+                        "on-tertiary-fixed": "#001b3e",
+                        "secondary-fixed-dim": "#ffb4a8",
+                        "secondary-fixed": "#ffdad4",
+                        "surface": "#131313",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-dim": "#131313",
+                        "on-primary-container": "#fffdff",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-surface-variant": "#e8bcb5",
+                        "surface-container": "#201f1f",
+                        "on-tertiary-container": "#fffcff",
+                        "tertiary-container": "#0073e2",
+                        "inverse-on-surface": "#313030",
+                        "surface-container-low": "#1c1b1b",
+                        "secondary-container": "#90190f",
+                        "on-secondary-container": "#ff9f90",
+                        "on-background": "#e5e2e1",
+                        "tertiary-fixed": "#d6e3ff",
+                        "on-surface": "#e5e2e1",
+                        "surface-container-highest": "#353534",
+                        "inverse-primary": "#c00000",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-bright": "#393939",
+                        "on-secondary-fixed": "#410000",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "on-error-container": "#ffdad6",
+                        "background": "#131313",
+                        "surface-tint": "#ffb4a8",
+                        "on-error": "#690005",
+                        "on-secondary-fixed-variant": "#8c160d",
+                        "outline-variant": "#5e3f3a",
+                        "error-container": "#93000a",
+                        "primary-fixed": "#ffdad4",
+                        "primary-container": "#e71a0f",
+                        "secondary": "#ffb4a8",
+                        "tertiary": "#aac7ff",
+                        "primary": "#ffb4a8",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed-variant": "#930000",
+                        "on-tertiary": "#002f64",
+                        "tertiary-fixed-dim": "#aac7ff",
+                        "on-tertiary-fixed-variant": "#00458d",
+                        "surface-variant": "#353534",
+                        "outline": "#af8781"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Header -->
+<nav class="fixed top-0 w-full z-50 bg-zinc-950/80 backdrop-blur-xl shadow-2xl shadow-black/40">
+<div class="flex items-center justify-between px-8 py-4 w-full max-w-screen-2xl mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-black tracking-tighter text-red-600 uppercase font-headline">AUTEUR</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-zinc-400 font-medium hover:text-zinc-100 transition-colors" href="#">Movies</a>
+<a class="text-zinc-400 font-medium hover:text-zinc-100 transition-colors" href="#">Stream</a>
+<a class="text-zinc-400 font-medium hover:text-zinc-100 transition-colors" href="#">Events</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-4 py-2 hover:bg-zinc-800/50 rounded-lg transition-all cursor-pointer">
+<span class="material-symbols-outlined text-zinc-400">location_on</span>
+<span class="text-zinc-100 font-medium font-label">New York</span>
+</div>
+<button class="material-symbols-outlined text-zinc-100 p-2 hover:bg-zinc-800/50 rounded-lg transition-all">menu</button>
+</div>
+</div>
+</nav>
+<main class="pt-24 pb-40 px-6 max-w-5xl mx-auto">
+<!-- Movie Header Section -->
+<header class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="space-y-2">
+<div class="flex items-center gap-3 text-primary uppercase tracking-widest text-xs font-bold font-headline">
+<span class="flex h-2 w-2 rounded-full bg-primary animate-pulse"></span>
+                    Now Selection Seats
+                </div>
+<h1 class="text-5xl md:text-6xl font-black font-headline tracking-tighter uppercase leading-none">
+                    Oppenheimer
+                </h1>
+<p class="text-zinc-400 font-medium flex items-center gap-4">
+<span>IMAX 70MM</span>
+<span class="w-1 h-1 bg-zinc-700 rounded-full"></span>
+<span>Friday, Oct 25</span>
+<span class="w-1 h-1 bg-zinc-700 rounded-full"></span>
+<span>19:30</span>
+</p>
+</div>
+<div class="flex gap-3">
+<div class="bg-surface-container-high px-4 py-3 rounded-xl border border-outline-variant/15">
+<span class="block text-[10px] uppercase tracking-wider text-zinc-500 font-bold mb-1">Cinema</span>
+<span class="text-zinc-100 font-semibold font-headline">Screen 04</span>
+</div>
+<div class="bg-surface-container-high px-4 py-3 rounded-xl border border-outline-variant/15">
+<span class="block text-[10px] uppercase tracking-wider text-zinc-500 font-bold mb-1">Seats</span>
+<span class="text-zinc-100 font-semibold font-headline">2 Selected</span>
+</div>
+</div>
+</header>
+<!-- Legend Section -->
+<div class="flex flex-wrap justify-center gap-8 mb-16 py-4 border-y border-outline-variant/10">
+<div class="flex items-center gap-2">
+<div class="w-5 h-5 rounded-lg bg-surface-container-highest"></div>
+<span class="text-xs font-semibold uppercase tracking-wider text-zinc-400 font-label">Available</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-5 h-5 rounded-lg bg-primary-container"></div>
+<span class="text-xs font-semibold uppercase tracking-wider text-zinc-100 font-label">Selected</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-5 h-5 rounded-lg bg-zinc-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-zinc-600">close</span>
+</div>
+<span class="text-xs font-semibold uppercase tracking-wider text-zinc-400 font-label">Sold</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-5 h-5 rounded-lg bg-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-white" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="text-xs font-semibold uppercase tracking-wider text-zinc-400 font-label">Bestseller</span>
+</div>
+</div>
+<!-- Seat Map Container -->
+<div class="relative mb-20 select-none">
+<!-- Screen Indicator -->
+<div class="w-full mb-24 flex flex-col items-center">
+<div class="w-3/4 h-2 bg-zinc-800 rounded-full shadow-[0_-10px_40px_rgba(231,26,15,0.4)] relative">
+<div class="absolute -top-12 left-1/2 -translate-x-1/2 text-primary font-headline font-black text-sm uppercase tracking-[0.4em] whitespace-nowrap">
+                        All eyes this way please
+                    </div>
+</div>
+<div class="w-3/4 h-32 screen-gradient opacity-40 blur-2xl"></div>
+</div>
+<!-- Seating Grid -->
+<div class="flex flex-col gap-8 items-center">
+<!-- PRIME Section -->
+<div class="w-full">
+<div class="flex items-center justify-center gap-3 mb-6">
+<span class="h-[1px] w-12 bg-outline-variant/30"></span>
+<span class="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">PRIME TIER — $24.00</span>
+<span class="h-[1px] w-12 bg-outline-variant/30"></span>
+</div>
+<div class="flex flex-col gap-3 items-center">
+<!-- Row G (Top Row) -->
+<div class="flex gap-2">
+<span class="w-6 text-[10px] text-zinc-600 font-bold flex items-center justify-center">G</span>
+<div class="flex gap-2 mx-4">
+<!-- Cluster Left -->
+<div class="flex gap-2">
+<div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest hover:bg-zinc-600 cursor-pointer transition-colors"></div>
+<div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest hover:bg-zinc-600 cursor-pointer transition-colors"></div>
+</div>
+<!-- Cluster Center -->
+<div class="flex gap-2 mx-6">
+<div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-primary-container flex items-center justify-center shadow-lg shadow-red-900/40">
+<span class="material-symbols-outlined text-white text-lg seat-selected">chair</span>
+</div>
+<div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-primary-container flex items-center justify-center shadow-lg shadow-red-900/40">
+<span class="material-symbols-outlined text-white text-lg seat-selected">chair</span>
+</div>
+<div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest hover:bg-zinc-600 cursor-pointer transition-colors"></div>
+<div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-zinc-800 flex items-center justify-center cursor-not-allowed">
+<span class="material-symbols-outlined text-sm text-zinc-600">close</span>
+</div>
+</div>
+<!-- Cluster Right -->
+<div class="flex gap-2">
+<div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest hover:bg-zinc-600 cursor-pointer transition-colors"></div>
+<div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest hover:bg-zinc-600 cursor-pointer transition-colors"></div>
+</div>
+</div>
+<span class="w-6 text-[10px] text-zinc-600 font-bold flex items-center justify-center">G</span>
+</div>
+<!-- Row F -->
+<div class="flex gap-2">
+<span class="w-6 text-[10px] text-zinc-600 font-bold flex items-center justify-center">F</span>
+<div class="flex gap-2 mx-4">
+<div class="flex gap-2">
+<div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-zinc-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm text-zinc-600">close</span>
+</div>
+<div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest hover:bg-zinc-600 transition-colors"></div>
+</div>
+<div class="flex gap-2 mx-6">
+<div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-tertiary-container flex items-center justify-center shadow-lg shadow-blue-900/40">
+<span class="material-symbols-outlined text-white text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-tertiary-container flex items-center justify-center shadow-lg shadow-blue-900/40">
+<span class="material-symbols-outlined text-white text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div>
+<div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div>
+</div>
+<div class="flex gap-2">
+<div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div>
+<div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div>
+</div>
+</div>
+<span class="w-6 text-[10px] text-zinc-600 font-bold flex items-center justify-center">F</span>
+</div>
+</div>
+</div>
+<!-- CLASSIC Section -->
+<div class="w-full">
+<div class="flex items-center justify-center gap-3 mb-6">
+<span class="h-[1px] w-12 bg-outline-variant/30"></span>
+<span class="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">CLASSIC TIER — $18.00</span>
+<span class="h-[1px] w-12 bg-outline-variant/30"></span>
+</div>
+<div class="flex flex-col gap-3 items-center">
+<!-- Rows E, D, C, B, A (Simplified for brevity) -->
+<div class="flex flex-col gap-3">
+<div class="flex gap-2">
+<span class="w-6 text-[10px] text-zinc-600 font-bold flex items-center justify-center">E</span>
+<div class="flex gap-2 mx-4">
+<div class="flex gap-2"><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div></div>
+<div class="flex gap-2 mx-6"><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div></div>
+<div class="flex gap-2"><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div></div>
+</div>
+<span class="w-6 text-[10px] text-zinc-600 font-bold flex items-center justify-center">E</span>
+</div>
+<div class="flex gap-2 opacity-80">
+<span class="w-6 text-[10px] text-zinc-600 font-bold flex items-center justify-center">D</span>
+<div class="flex gap-2 mx-4">
+<div class="flex gap-2"><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-zinc-800"></div><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div></div>
+<div class="flex gap-2 mx-6"><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div></div>
+<div class="flex gap-2"><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-zinc-800"></div></div>
+</div>
+<span class="w-6 text-[10px] text-zinc-600 font-bold flex items-center justify-center">D</span>
+</div>
+<div class="flex gap-2 opacity-60">
+<span class="w-6 text-[10px] text-zinc-600 font-bold flex items-center justify-center">C</span>
+<div class="flex gap-2 mx-4">
+<div class="flex gap-2"><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-zinc-800"></div></div>
+<div class="flex gap-2 mx-6"><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-zinc-800"></div><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-zinc-800"></div><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-zinc-800"></div><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-zinc-800"></div></div>
+<div class="flex gap-2"><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-zinc-800"></div><div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-surface-container-highest"></div></div>
+</div>
+<span class="w-6 text-[10px] text-zinc-600 font-bold flex items-center justify-center">C</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Footer -->
+<footer class="fixed bottom-0 left-0 w-full z-50 p-6 md:p-8">
+<div class="max-w-screen-xl mx-auto glass-panel rounded-2xl md:rounded-[2rem] p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl border border-outline-variant/10">
+<div class="flex items-center gap-8 w-full md:w-auto">
+<div class="space-y-1">
+<span class="text-[10px] font-black uppercase tracking-widest text-zinc-500">Total Price</span>
+<div class="text-3xl font-black font-headline text-zinc-100">$48.00</div>
+</div>
+<div class="h-10 w-[1px] bg-zinc-800 hidden md:block"></div>
+<div class="space-y-1">
+<span class="text-[10px] font-black uppercase tracking-widest text-zinc-500">Seats</span>
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-surface-container-highest rounded-lg text-xs font-bold text-zinc-300">G-04</span>
+<span class="px-2 py-1 bg-surface-container-highest rounded-lg text-xs font-bold text-zinc-300">G-05</span>
+</div>
+</div>
+</div>
+<div class="flex gap-4 w-full md:w-auto">
+<button class="flex-1 md:flex-none px-8 py-4 rounded-xl font-bold uppercase tracking-wider text-sm border border-outline-variant/30 text-zinc-100 hover:bg-zinc-800 transition-all">
+                    Cancel
+                </button>
+                <button onclick="window.location.href='secure_payment_gateway.html'" class="flex-1 md:flex-none px-12 py-4 rounded-xl bg-gradient-to-br from-primary-container to-[#930000] text-on-primary-container font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-red-900/40 hover:scale-[1.02] active:scale-95 transition-all">
+                    Pay Now
+                </button>
+</div>
+</div>
+</footer>
+<!-- Image for Visual Context reference (Hidden) -->
+<div class="hidden">
+<img data-alt="Dark dramatic theater interior with red ambient lighting and empty velvet seats in a cinematic wide shot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhiyQWYFp6fxhMLVmp7KSdQcglXJ6TwTLrBEt7OrLiULjYDPprqDI9_QsaOfEM2rRmvYLbTjf0gT67t2Hm1flUtw8xih11veaBqh3w2buSA2MQsUoZqM-rptgSAZiih1y3rtzsrcKV8r40UIw6jjssz6Yy3D6jzurJ26UxQUUIXgCdRx29b0-YLF2QOyC2dn6Eg7YfsXcglJkDJep9Jk6id3kiUNmvwyPPswjU9YABTsiPa309x07-E19lSQVwU2VAcoLT5hmIF9k"/>
+</div>
+</body></html>

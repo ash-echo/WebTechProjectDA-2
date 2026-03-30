@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AUTEUR - Showtimes &amp; Theaters</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #131313; /* surface-dim from config */
+        }
+        .editorial-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary": "#690000",
+              "on-primary-fixed": "#410000",
+              "on-primary": "#690000",
+              "on-tertiary-fixed": "#001b3e",
+              "secondary-fixed-dim": "#ffb4a8",
+              "secondary-fixed": "#ffdad4",
+              "surface": "#131313",
+              "inverse-surface": "#e5e2e1",
+              "surface-dim": "#131313",
+              "on-primary-container": "#fffdff",
+              "surface-container-lowest": "#0e0e0e",
+              "on-surface-variant": "#e8bcb5",
+              "surface-container": "#201f1f",
+              "on-tertiary-container": "#fffcff",
+              "tertiary-container": "#0073e2",
+              "inverse-on-surface": "#313030",
+              "surface-container-low": "#1c1b1b",
+              "secondary-container": "#90190f",
+              "on-secondary-container": "#ff9f90",
+              "on-background": "#e5e2e1",
+              "tertiary-fixed": "#d6e3ff",
+              "on-surface": "#e5e2e1",
+              "surface-container-highest": "#353534",
+              "inverse-primary": "#c00000",
+              "surface-container-high": "#2a2a2a",
+              "surface-bright": "#393939",
+              "on-secondary-fixed": "#410000",
+              "primary-fixed-dim": "#ffb4a8",
+              "on-error-container": "#ffdad6",
+              "background": "#131313",
+              "surface-tint": "#ffb4a8",
+              "on-error": "#690005",
+              "on-secondary-fixed-variant": "#8c160d",
+              "outline-variant": "#5e3f3a",
+              "error-container": "#93000a",
+              "primary-fixed": "#ffdad4",
+              "primary-container": "#e71a0f",
+              "secondary": "#ffb4a8",
+              "tertiary": "#aac7ff",
+              "primary": "#ffb4a8",
+              "error": "#ffb4ab",
+              "on-primary-fixed-variant": "#930000",
+              "on-tertiary": "#002f64",
+              "tertiary-fixed-dim": "#aac7ff",
+              "on-tertiary-fixed-variant": "#00458d",
+              "surface-variant": "#353534",
+              "outline": "#af8781"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="text-on-surface antialiased">
+<!-- TopNavBar -->
+<nav class="bg-zinc-950/80 backdrop-blur-xl fixed top-0 w-full z-50 shadow-2xl shadow-black/40">
+<div class="flex items-center justify-between px-8 py-4 w-full max-w-screen-2xl mx-auto">
+<div class="flex items-center gap-12">
+<span class="text-2xl font-black tracking-tighter text-red-600 uppercase editorial-title">AUTEUR</span>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-red-500 font-bold border-b-2 border-red-500 pb-1 font-['Inter'] text-sm uppercase tracking-wide" href="home_movie_booking.html">Movies</a>
+<a class="text-zinc-400 font-medium hover:text-zinc-100 transition-colors font-['Inter'] text-sm uppercase tracking-wide" href="showtimes_theaters.html">Showtimes</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center bg-zinc-800/50 rounded-lg px-4 py-2 gap-3">
+<span class="material-symbols-outlined text-zinc-400">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm text-zinc-200 placeholder-zinc-500 w-64" placeholder="Search for Movies, Events..." type="text"/>
+</div>
+<button class="flex items-center gap-2 text-zinc-300 font-medium hover:text-white transition-all">
+<span class="material-symbols-outlined">location_on</span>
+<span class="text-sm font-semibold tracking-wide uppercase">New York</span>
+</button>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-xl font-bold text-sm tracking-wide uppercase hover:brightness-110 active:scale-95 transition-all">
+                    Sign In
+                </button>
+<button class="md:hidden text-zinc-100">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</nav>
+<main class="pt-24 pb-20">
+<!-- Hero Movie Context (Subtle) -->
+<section class="relative h-[409px] w-full overflow-hidden mb-[-8rem]">
+<img alt="Cinematic background" class="w-full h-full object-cover" data-alt="Cinematic close-up of a vintage film projector lens with warm golden flare and soft bokeh in a dark theater" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5_TS8bBgblUpXS4hmFbLJeK2S9EqRfOQKVK-K4QfxW9Os9PRMFxzaeeHks1qznQNBuTgxmKgI37zOr6LjfMeoIFzpsSjeNkbSOxLPz5Ld6QBtuqKsEg75E5L1T0HXkDuuIhZUzLxkIv64Oic_TBxIBo-unIVW8FHPnI9xoZZEjkd9VLt8J4cW8sUCGNVWbfEeAk339mY8NlC8mpqH95cMR-ksrXITt9qDkCNVv7nDrcBggd1jJlT3QQzTC6nLYZSv0dlmlwQ5yew"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent"></div>
+<div class="absolute bottom-40 left-8 md:left-12 lg:left-24">
+<p class="text-primary-container font-bold tracking-[0.2em] uppercase text-xs mb-4">Now Showing</p>
+<h1 class="editorial-title text-5xl md:text-7xl font-black tracking-tighter text-white">THE GRAND FINALE</h1>
+<div class="flex items-center gap-4 mt-6">
+<span class="bg-zinc-800 text-zinc-300 px-3 py-1 rounded text-xs font-bold uppercase tracking-widest border border-zinc-700/50">UA | 16+</span>
+<span class="flex items-center gap-1 text-zinc-100 font-bold">
+<span class="material-symbols-outlined text-yellow-500" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span> 9.2
+                    </span>
+<span class="text-zinc-400 text-sm">• Action / Drama • 2h 45m</span>
+</div>
+</div>
+</section>
+<!-- Date Picker & Filters -->
+<div class="sticky top-[72px] z-40 bg-surface/80 backdrop-blur-md pb-6 pt-2">
+<div class="max-w-7xl mx-auto px-8 lg:px-12">
+<!-- Date Selector -->
+<div class="flex items-center gap-4 overflow-x-auto no-scrollbar py-4">
+<div class="flex flex-col items-center justify-center min-w-[70px] h-[90px] rounded-2xl bg-primary-container text-white cursor-pointer shadow-lg shadow-red-900/20">
+<span class="text-xs font-bold uppercase tracking-widest opacity-80">Nov</span>
+<span class="editorial-title text-2xl font-black">14</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Today</span>
+</div>
+<!-- Other Dates -->
+<div class="flex flex-col items-center justify-center min-w-[70px] h-[90px] rounded-2xl bg-surface-container-high text-zinc-400 hover:bg-zinc-800 cursor-pointer transition-all">
+<span class="text-xs font-bold uppercase tracking-widest">Nov</span>
+<span class="editorial-title text-2xl font-black text-zinc-100">15</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Fri</span>
+</div>
+<div class="flex flex-col items-center justify-center min-w-[70px] h-[90px] rounded-2xl bg-surface-container-high text-zinc-400 hover:bg-zinc-800 cursor-pointer transition-all">
+<span class="text-xs font-bold uppercase tracking-widest">Nov</span>
+<span class="editorial-title text-2xl font-black text-zinc-100">16</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Sat</span>
+</div>
+<div class="flex flex-col items-center justify-center min-w-[70px] h-[90px] rounded-2xl bg-surface-container-high text-zinc-400 hover:bg-zinc-800 cursor-pointer transition-all">
+<span class="text-xs font-bold uppercase tracking-widest">Nov</span>
+<span class="editorial-title text-2xl font-black text-zinc-100">17</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Sun</span>
+</div>
+<div class="flex flex-col items-center justify-center min-w-[70px] h-[90px] rounded-2xl bg-surface-container-high text-zinc-400 hover:bg-zinc-800 cursor-pointer transition-all">
+<span class="text-xs font-bold uppercase tracking-widest">Nov</span>
+<span class="editorial-title text-2xl font-black text-zinc-100">18</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Mon</span>
+</div>
+</div>
+<!-- Filters -->
+<div class="flex flex-wrap items-center gap-3 mt-4">
+<button class="bg-surface-container-highest text-zinc-100 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-zinc-700 transition-colors">
+                        Price Range <span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+<button class="bg-surface-container-highest text-zinc-100 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-zinc-700 transition-colors">
+                        Showtimes <span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+<button class="bg-primary text-on-primary px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+                        Special Formats (IMAX) <span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+<button class="bg-surface-container-highest text-zinc-100 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-zinc-700 transition-colors">
+                        Subtitles <span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Theater Listings -->
+<div class="max-w-7xl mx-auto px-8 lg:px-12 mt-8 space-y-6">
+<!-- Theater Card 1 -->
+<div class="bg-surface-container-low rounded-3xl overflow-hidden group hover:bg-surface-container transition-all">
+<div class="flex flex-col md:flex-row p-6 lg:p-10 gap-8">
+<!-- Theater Info -->
+<div class="md:w-1/3 border-b md:border-b-0 md:border-r border-outline-variant/20 pb-6 md:pb-0 pr-0 md:pr-8">
+<div class="flex items-start justify-between">
+<h3 class="editorial-title text-2xl font-black text-white leading-tight">The Vijay Park Multiplex</h3>
+<span class="material-symbols-outlined text-zinc-500 hover:text-primary-container cursor-pointer transition-colors">favorite</span>
+</div>
+<p class="text-zinc-400 text-sm mt-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                            8th Avenue, Upper West Side, Manhattan
+                        </p>
+<div class="flex items-center gap-4 mt-6">
+<div class="flex items-center gap-1.5 text-zinc-300">
+<span class="material-symbols-outlined text-[20px]">local_parking</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Parking</span>
+</div>
+<div class="flex items-center gap-1.5 text-zinc-300">
+<span class="material-symbols-outlined text-[20px]">restaurant</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Food</span>
+</div>
+<div class="flex items-center gap-1.5 text-zinc-300">
+<span class="material-symbols-outlined text-[20px]">accessible</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Assisted</span>
+</div>
+</div>
+</div>
+<!-- Showtimes Grid -->
+<div class="md:w-2/3">
+<div class="flex items-center justify-between mb-6">
+<span class="text-xs font-bold uppercase tracking-widest text-zinc-500">Available Showtimes</span>
+<div class="flex items-center gap-4 text-[10px] font-bold uppercase tracking-widest">
+<span class="flex items-center gap-1.5 text-emerald-500"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Available</span>
+<span class="flex items-center gap-1.5 text-orange-400"><span class="w-2 h-2 rounded-full bg-orange-400"></span> Filling Fast</span>
+</div>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+<!-- Showtime Item: Available -->
+<div class="group/time relative overflow-hidden bg-surface-container-high hover:bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 cursor-pointer transition-all">
+<p class="text-center text-emerald-400 font-bold text-lg group-hover/time:scale-110 transition-transform">06:30 PM</p>
+<p class="text-center text-[9px] uppercase tracking-tighter text-emerald-500/60 mt-1 font-bold">4K Atmos • IMAX</p>
+</div>
+<!-- Showtime Item: Filling -->
+<div class="group/time relative overflow-hidden bg-surface-container-high hover:bg-orange-500/10 border border-orange-500/20 rounded-2xl p-4 cursor-pointer transition-all">
+<p class="text-center text-orange-400 font-bold text-lg">08:15 PM</p>
+<p class="text-center text-[9px] uppercase tracking-tighter text-orange-500/60 mt-1 font-bold">Standard • Digital</p>
+</div>
+<div class="group/time relative overflow-hidden bg-surface-container-high hover:bg-orange-500/10 border border-orange-500/20 rounded-2xl p-4 cursor-pointer transition-all">
+<p class="text-center text-orange-400 font-bold text-lg">09:30 PM</p>
+<p class="text-center text-[9px] uppercase tracking-tighter text-orange-500/60 mt-1 font-bold">4K Atmos • IMAX</p>
+</div>
+<div class="group/time relative overflow-hidden bg-surface-container-high hover:bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 cursor-pointer transition-all">
+<p class="text-center text-emerald-400 font-bold text-lg">10:00 PM</p>
+<p class="text-center text-[9px] uppercase tracking-tighter text-emerald-500/60 mt-1 font-bold">Digital • 7.1</p>
+</div>
+<div class="group/time relative overflow-hidden bg-surface-container-high hover:bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 cursor-pointer transition-all">
+<p class="text-center text-emerald-400 font-bold text-lg">11:15 PM</p>
+<p class="text-center text-[9px] uppercase tracking-tighter text-emerald-500/60 mt-1 font-bold">IMAX 3D</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Theater Card 2 -->
+<div class="bg-surface-container-low rounded-3xl overflow-hidden group hover:bg-surface-container transition-all">
+<div class="flex flex-col md:flex-row p-6 lg:p-10 gap-8">
+<!-- Theater Info -->
+<div class="md:w-1/3 border-b md:border-b-0 md:border-r border-outline-variant/20 pb-6 md:pb-0 pr-0 md:pr-8">
+<div class="flex items-start justify-between">
+<h3 class="editorial-title text-2xl font-black text-white leading-tight">Cinema Art House Brooklyn</h3>
+<span class="material-symbols-outlined text-zinc-500 hover:text-primary-container cursor-pointer transition-colors">favorite</span>
+</div>
+<p class="text-zinc-400 text-sm mt-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                            112 North 6th St, Brooklyn
+                        </p>
+<div class="flex items-center gap-4 mt-6">
+<div class="flex items-center gap-1.5 text-zinc-300">
+<span class="material-symbols-outlined text-[20px]">restaurant</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Organic Cafe</span>
+</div>
+<div class="flex items-center gap-1.5 text-zinc-300">
+<span class="material-symbols-outlined text-[20px]">wine_bar</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Wine Bar</span>
+</div>
+</div>
+</div>
+<!-- Showtimes Grid -->
+<div class="md:w-2/3">
+<div class="flex items-center justify-between mb-6">
+<span class="text-xs font-bold uppercase tracking-widest text-zinc-500">Available Showtimes</span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+<div class="group/time relative overflow-hidden bg-surface-container-high hover:bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 cursor-pointer transition-all">
+<p class="text-center text-emerald-400 font-bold text-lg">05:45 PM</p>
+<p class="text-center text-[9px] uppercase tracking-tighter text-emerald-500/60 mt-1 font-bold">Director's Cut</p>
+</div>
+<div class="group/time relative overflow-hidden bg-surface-container-high hover:bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 cursor-pointer transition-all">
+<p class="text-center text-emerald-400 font-bold text-lg">09:00 PM</p>
+<p class="text-center text-[9px] uppercase tracking-tighter text-emerald-500/60 mt-1 font-bold">35mm Projection</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Theater Card 3 -->
+<div class="bg-surface-container-low rounded-3xl overflow-hidden group hover:bg-surface-container transition-all opacity-70">
+<div class="flex flex-col md:flex-row p-6 lg:p-10 gap-8">
+<!-- Theater Info -->
+<div class="md:w-1/3 border-b md:border-b-0 md:border-r border-outline-variant/20 pb-6 md:pb-0 pr-0 md:pr-8">
+<div class="flex items-start justify-between">
+<h3 class="editorial-title text-2xl font-black text-white leading-tight">Downtown Premiere Theater</h3>
+</div>
+<p class="text-zinc-400 text-sm mt-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                            Wall Street, Financial District
+                        </p>
+<p class="text-primary-container font-bold text-[10px] mt-4 uppercase tracking-[0.2em]">Sold Out for this Date</p>
+</div>
+<div class="md:w-2/3 flex items-center justify-center py-10">
+<p class="text-zinc-500 font-bold text-sm uppercase tracking-widest italic">All showtimes are currently booked. Please check another date.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-zinc-900 w-full pt-16 pb-8">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 px-12 max-w-7xl mx-auto">
+<div class="space-y-6">
+<span class="text-xl font-bold text-zinc-100 editorial-title">AUTEUR</span>
+<p class="text-zinc-500 text-sm leading-relaxed">Defining the next era of cinematic discovery through curated experiences and architectural digital spaces.</p>
+</div>
+<div>
+<h4 class="text-zinc-100 font-bold text-sm uppercase tracking-widest mb-6">Discover</h4>
+<ul class="space-y-4">
+<li><a class="text-zinc-500 hover:text-zinc-200 transition-colors text-sm font-semibold uppercase tracking-wide hover:underline decoration-red-600 underline-offset-4" href="#">Cinemas</a></li>
+<li><a class="text-zinc-500 hover:text-zinc-200 transition-colors text-sm font-semibold uppercase tracking-wide hover:underline decoration-red-600 underline-offset-4" href="#">Gift Cards</a></li>
+<li><a class="text-zinc-500 hover:text-zinc-200 transition-colors text-sm font-semibold uppercase tracking-wide hover:underline decoration-red-600 underline-offset-4" href="#">Offers</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-zinc-100 font-bold text-sm uppercase tracking-widest mb-6">Support</h4>
+<ul class="space-y-4">
+<li><a class="text-zinc-500 hover:text-zinc-200 transition-colors text-sm font-semibold uppercase tracking-wide hover:underline decoration-red-600 underline-offset-4" href="#">Help Center</a></li>
+<li><a class="text-zinc-500 hover:text-zinc-200 transition-colors text-sm font-semibold uppercase tracking-wide hover:underline decoration-red-600 underline-offset-4" href="#">Feedback</a></li>
+<li><a class="text-zinc-500 hover:text-zinc-200 transition-colors text-sm font-semibold uppercase tracking-wide hover:underline decoration-red-600 underline-offset-4" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-zinc-100 font-bold text-sm uppercase tracking-widest mb-6">Newsletter</h4>
+<div class="flex flex-col gap-4">
+<p class="text-zinc-500 text-xs">Stay updated on secret screenings and early access.</p>
+<div class="flex items-center gap-2">
+<input class="bg-zinc-800/50 border-none rounded-lg text-sm w-full py-2.5 px-4 text-zinc-100 focus:ring-1 focus:ring-red-600" placeholder="Your email" type="email"/>
+<button class="bg-red-600 text-white p-2.5 rounded-lg hover:bg-red-700 transition-all">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-12 mt-16 pt-8 border-t border-zinc-800 flex flex-col md:flex-row justify-between items-center gap-6">
+<p class="text-zinc-500 text-[10px] font-semibold uppercase tracking-widest">© 2024 AUTEUR CINEMA. ALL RIGHTS RESERVED.</p>
+<div class="flex gap-6">
+<a class="text-zinc-500 hover:text-red-500 transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="text-zinc-500 hover:text-red-500 transition-colors" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
+<a class="text-zinc-500 hover:text-red-500 transition-colors" href="#"><span class="material-symbols-outlined">movie</span></a>
+</div>
+</div>
+</footer>
+<!-- Bottom Navigation for Mobile -->
+<div class="md:hidden fixed bottom-0 left-0 w-full bg-zinc-950/90 backdrop-blur-xl z-50 px-6 py-4 flex items-center justify-between border-t border-white/5">
+<a class="flex flex-col items-center gap-1 text-red-500" href="#">
+<span class="material-symbols-outlined">movie</span>
+<span class="text-[10px] font-bold uppercase">Movies</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-zinc-500" href="#">
+<span class="material-symbols-outlined">play_circle</span>
+<span class="text-[10px] font-bold uppercase">Stream</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-zinc-500" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-[10px] font-bold uppercase">Events</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-zinc-500" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[10px] font-bold uppercase">Profile</span>
+</a>
+</div>
+</body></html>
