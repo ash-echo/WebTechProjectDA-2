@@ -1,4 +1,13 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Global Configuration
+if (!defined('BASE_URL')) {
+    define('BASE_URL', '/WebTechProject/movie-booking-app/');
+}
+
 // Database configuration
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
@@ -24,8 +33,5 @@ function getDBConnection() {
 function closeDBConnection($pdo) {
     // PDO connections are closed automatically when the object goes out of scope
     // This function is kept for compatibility but doesn't need to do anything
-}
-?>
-    $conn->close();
 }
 ?>

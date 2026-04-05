@@ -48,7 +48,9 @@ try {
     }
     
     // Start session and set user data
-    session_start();
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['user_name'] = $user['name'];
     $_SESSION['user_email'] = $user['email'];
@@ -66,7 +68,7 @@ try {
     echo json_encode([
         'success' => true,
         'message' => 'Login successful',
-        'redirect' => 'movies.php'
+        'redirect' => '../index.php'
     ]);
     
 } catch (Exception $e) {

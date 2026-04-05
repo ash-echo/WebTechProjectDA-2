@@ -21,14 +21,25 @@ if (!$showId || !$selectedSeatsJson || $totalAmount <= 0) {
     exit();
 }
 
-$selectedSeats = json_decode($selectedSeatsJson, true);
-if (!is_array($selectedSeats) || empty($selectedSeats)) {
+$selectedSeatObjs = json_decode($selectedSeatsJson, true);
+if (!is_array($selectedSeatObjs) || empty($selectedSeatObjs)) {
     echo json_encode(['success' => false, 'message' => 'Invalid seat selection']);
     exit();
 }
 
+// Map if we received array of objects with 'id' or just array of ids
+$selectedSeatIds = [];
+foreach ($selectedSeatObjs as $s) {
+    if (is_array($s) && isset($s['id'])) {
+        $selectedSeatIds[] = $s['id'];
+    } elseif (is_numeric($s)) {
+        $selectedSeatIds[] = $s;
+    }
+}
+
 try {
     $conn = getDBConnection();
+    cleanExpiredLocks();
     
     // Start transaction
     $conn->beginTransaction();
@@ -41,26 +52,26 @@ try {
         exit();
     }
     
-    // Verify seats are still locked by this user
-    $placeholders = str_repeat('?,', count($selectedSeats) - 1) . '?';
+    // Check if seats are currently locked by the user
+    $placeholders = implode(',', array_fill(0, count($selectedSeatIds), '?'));
     $stmt = $conn->prepare("
-        SELECT id FROM seats 
-        WHERE id IN ($placeholders) AND show_id = ? AND status = 'locked' AND locked_by = ?
+        SELECT seat_id FROM seat_locks 
+        WHERE show_id = ? AND locked_by = ? AND seat_id IN ($placeholders)
     ");
-    $params = array_merge($selectedSeats, [$showId, $_SESSION['user_id']]);
+    $params = array_merge([$showId, $_SESSION['user_id']], $selectedSeatIds);
     $stmt->execute($params);
-    $lockedSeats = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    $lockedSeatIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
     
-    if (count($lockedSeats) !== count($selectedSeats)) {
+    if (count($lockedSeatIds) !== count($selectedSeatIds)) {
         $conn->rollBack();
-        echo json_encode(['success' => false, 'message' => 'Some seats are no longer available']);
+        echo json_encode(['success' => false, 'message' => 'Seat lock expired. Please select seats again.']);
         exit();
     }
     
     // Create booking
-    $bookingId = generateBookingId();
     $userId = $_SESSION['user_id'];
     $bookingDate = date('Y-m-d H:i:s');
+    $bookingId = generateBookingId();
     
     $stmt = $conn->prepare("
         INSERT INTO bookings (id, user_id, show_id, booking_date, total_amount, status) 
@@ -69,29 +80,28 @@ try {
     $stmt->execute([$bookingId, $userId, $showId, $bookingDate, $totalAmount]);
     
     // Create booking details
-    $stmt = $conn->prepare("
+    $stmtDetail = $conn->prepare("
         INSERT INTO booking_details (booking_id, seat_id, price) 
         VALUES (?, ?, ?)
     ");
     
     $seatPrice = $show['price'];
-    foreach ($selectedSeats as $seatId) {
-        $stmt->execute([$bookingId, $seatId, $seatPrice]);
+    foreach ($selectedSeatIds as $seatId) {
+        // Find specific seat price if it was VIP
+        $stmtS = $conn->prepare("SELECT seat_type FROM seats WHERE id = ?");
+        $stmtS->execute([$seatId]);
+        $type = $stmtS->fetchColumn();
+        $finalPrice = ($type == 'VIP') ? $seatPrice + 5 : $seatPrice;
+        
+        $stmtDetail->execute([$bookingId, $seatId, $finalPrice]);
     }
     
-    // Update seats to booked
+    // Delete locks now that they are booked
     $stmt = $conn->prepare("
-        UPDATE seats SET status = 'booked', locked_by = NULL, locked_until = NULL 
-        WHERE id IN ($placeholders) AND show_id = ? AND status = 'locked' AND locked_by = ?
+        DELETE FROM seat_locks
+        WHERE show_id = ? AND locked_by = ? AND seat_id IN ($placeholders)
     ");
-    $params = array_merge($selectedSeats, [$showId, $_SESSION['user_id']]);
-    $stmt->execute($params);
-    
-    if ($stmt->rowCount() !== count($selectedSeats)) {
-        $conn->rollBack();
-        echo json_encode(['success' => false, 'message' => 'Failed to confirm some seats']);
-        exit();
-    }
+    $stmt->execute(array_merge([$showId, $_SESSION['user_id']], $selectedSeatIds));
     
     // Clear session data
     unset($_SESSION['selected_seats']);
@@ -106,10 +116,10 @@ try {
     ]);
     
 } catch (Exception $e) {
-    if (isset($conn)) {
+    if (isset($conn) && $conn->inTransaction()) {
         $conn->rollBack();
     }
     error_log('Payment processing error: ' . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'An error occurred during payment processing']);
+    echo json_encode(['success' => false, 'message' => 'An error occurred during payment processing. Details: ' . $e->getMessage()]);
 }
 ?>

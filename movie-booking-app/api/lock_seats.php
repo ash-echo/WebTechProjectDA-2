@@ -10,76 +10,98 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
-requireLogin();
-
 $data = json_decode(file_get_contents('php://input'), true);
 $showId = isset($data['show_id']) ? (int)$data['show_id'] : 0;
-$seatIds = isset($data['seat_ids']) ? $data['seat_ids'] : [];
+// Note: seat_ids can be empty if the user is polling for status, we handle locking separately from polling.
+$action = isset($data['action']) ? $data['action'] : 'lock';
 
-if (!$showId || empty($seatIds)) {
+if (!$showId) {
     echo json_encode(['success' => false, 'message' => 'Invalid request data']);
+    exit();
+}
+
+if ($action === 'poll') {
+    // Return current seat states
+    $seats = getSeatStatusForShow($showId);
+    echo json_encode(['success' => true, 'seats' => $seats]);
+    exit();
+}
+
+// Below logic is for LOCKING seats
+if (!isLoggedIn()) {
+    echo json_encode(['success' => false, 'message' => 'You must log in first', 'redirect' => 'login.php']);
+    exit();
+}
+
+$seatIds = isset($data['seat_ids']) ? $data['seat_ids'] : [];
+if (empty($seatIds)) {
+    echo json_encode(['success' => false, 'message' => 'No seats selected']);
     exit();
 }
 
 try {
     $conn = getDBConnection();
-    
+    cleanExpiredLocks(); // Delete old locks
+
+    $userId = $_SESSION['user_id'];
+
     // Start transaction
     $conn->beginTransaction();
-    
-    // Check if seats are still available
-    $placeholders = str_repeat('?,', count($seatIds) - 1) . '?';
+
+    // 1. Check if ANY of the requested seats are booked
+    $placeholders = implode(',', array_fill(0, count($seatIds), '?'));
+    $params = array_merge([$showId], $seatIds);
+
     $stmt = $conn->prepare("
-        SELECT id, status FROM seats 
-        WHERE id IN ($placeholders) AND show_id = ?
+        SELECT bd.seat_id 
+        FROM booking_details bd
+        JOIN bookings b ON bd.booking_id = b.id
+        WHERE b.show_id = ? AND b.status = 'confirmed' AND bd.seat_id IN ($placeholders)
     ");
-    $params = array_merge($seatIds, [$showId]);
     $stmt->execute($params);
-    $seats = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    if (count($seats) !== count($seatIds)) {
+    if ($stmt->fetch()) {
         $conn->rollBack();
-        echo json_encode(['success' => false, 'message' => 'Some seats not found']);
+        echo json_encode(['success' => false, 'message' => 'One or more seats have just been booked by another user.']);
         exit();
     }
-    
-    foreach ($seats as $seat) {
-        if ($seat['status'] !== 'available') {
-            $conn->rollBack();
-            echo json_encode(['success' => false, 'message' => 'Some seats are no longer available']);
-            exit();
-        }
-    }
-    
-    // Lock the seats
-    $userId = $_SESSION['user_id'];
-    $lockExpiry = date('Y-m-d H:i:s', strtotime('+10 minutes'));
-    
+
+    // 2. Check if ANY of the requested seats are locked by OTHERS
     $stmt = $conn->prepare("
-        UPDATE seats SET status = 'locked', locked_by = ?, locked_until = ? 
-        WHERE id IN ($placeholders) AND show_id = ? AND status = 'available'
+        SELECT seat_id 
+        FROM seat_locks 
+        WHERE show_id = ? AND seat_id IN ($placeholders) AND expires_at > NOW() AND locked_by != ?
     ");
-    $params = array_merge([$userId, $lockExpiry], $seatIds, [$showId]);
-    $stmt->execute($params);
-    
-    if ($stmt->rowCount() !== count($seatIds)) {
+    $lockParams = array_merge([$showId], $seatIds, [$userId]);
+    $stmt->execute($lockParams);
+    if ($stmt->fetch()) {
         $conn->rollBack();
-        echo json_encode(['success' => false, 'message' => 'Failed to lock some seats']);
+        echo json_encode(['success' => false, 'message' => 'One or more seats are currently locked by someone else.']);
         exit();
     }
+
+    // 3. Clear existing locks for this user for this show
+    $stmt = $conn->prepare("DELETE FROM seat_locks WHERE locked_by = ? AND show_id = ?");
+    $stmt->execute([$userId, $showId]);
+
+    // 4. Insert new locks
+    $insertStmt = $conn->prepare("INSERT INTO seat_locks (seat_id, show_id, locked_by, expires_at) VALUES (?, ?, ?, DATE_ADD(NOW(), INTERVAL 5 MINUTE))");
     
+    foreach ($seatIds as $sId) {
+        $insertStmt->execute([$sId, $showId, $userId]);
+    }
+
     // Store selected seats in session
     $_SESSION['selected_seats'] = $seatIds;
     $_SESSION['locked_show_id'] = $showId;
-    
+
     $conn->commit();
     echo json_encode(['success' => true]);
-    
+
 } catch (Exception $e) {
-    if (isset($conn)) {
+    if (isset($conn) && $conn->inTransaction()) {
         $conn->rollBack();
     }
     error_log('Seat locking error: ' . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'An error occurred']);
+    echo json_encode(['success' => false, 'message' => 'An error occurred while locking seats.']);
 }
 ?>
