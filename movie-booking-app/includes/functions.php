@@ -17,11 +17,31 @@ try {
     // Ignore if table doesn't exist yet
 }
 
-// Get all movies
-function getAllMovies() {
+// Get movies with optional filtering and sorting
+function getAllMovies($genre = null, $format = null, $sort = 'newest') {
     try {
         $conn = getDBConnection();
-        $stmt = $conn->query("SELECT * FROM movies ORDER BY release_date DESC");
+        $query = "SELECT * FROM movies WHERE 1=1";
+        $params = [];
+
+        if ($genre && $genre !== 'All') {
+            $query .= " AND genre LIKE ?";
+            $params[] = "%$genre%";
+        }
+        if ($format && $format !== 'All') {
+            $query .= " AND format = ?";
+            $params[] = $format;
+        }
+
+        switch ($sort) {
+            case 'rating': $query .= " ORDER BY rating DESC"; break;
+            case 'alpha':  $query .= " ORDER BY title ASC"; break;
+            case 'newest': 
+            default:       $query .= " ORDER BY release_date DESC"; break;
+        }
+
+        $stmt = $conn->prepare($query);
+        $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) { return []; }
 }
@@ -36,18 +56,36 @@ function getMovieById($id) {
     } catch (Exception $e) { return null; }
 }
 
-// Get shows for a movie on a specific date
-function getShowsForMovie($movieId, $date = null) {
+// Get shows for a movie on a specific date with optional filters
+function getShowsForMovie($movieId, $date = null, $format = null, $timeSlot = null) {
     if (!$date) $date = date('Y-m-d');
     try {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("
+        $query = "
             SELECT s.*, t.name as theater_name, t.location
             FROM shows s JOIN theaters t ON s.theater_id = t.id
             WHERE s.movie_id = ? AND s.show_date = ?
-            ORDER BY s.show_time ASC
-        ");
-        $stmt->execute([$movieId, $date]);
+        ";
+        $params = [$movieId, $date];
+
+        if ($format && $format !== 'All') {
+            $query .= " AND s.format = ?";
+            $params[] = $format;
+        }
+
+        if ($timeSlot && $timeSlot !== 'All') {
+            switch($timeSlot) {
+                case 'Morning':   $query .= " AND HOUR(s.show_time) BETWEEN 6 AND 11"; break;
+                case 'Afternoon': $query .= " AND HOUR(s.show_time) BETWEEN 12 AND 16"; break;
+                case 'Evening':   $query .= " AND HOUR(s.show_time) BETWEEN 17 AND 20"; break;
+                case 'Night':     $query .= " AND (HOUR(s.show_time) >= 21 OR HOUR(s.show_time) < 6)"; break;
+            }
+        }
+
+        $query .= " ORDER BY s.show_time ASC";
+        
+        $stmt = $conn->prepare($query);
+        $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) { return []; }
 }

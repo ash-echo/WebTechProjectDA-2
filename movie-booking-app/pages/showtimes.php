@@ -12,7 +12,10 @@ if (!$movie) {
     exit();
 }
 
-$shows = getShowsForMovie($movieId, $date);
+$selectedFormat = $_GET['format'] ?? 'All';
+$selectedTime = $_GET['time'] ?? 'All';
+
+$shows = getShowsForMovie($movieId, $date, $selectedFormat, $selectedTime);
 ?>
 
 <main class="pt-16 pb-20">
@@ -50,7 +53,7 @@ $dayName = date('D', strtotime($d));
 $dayNum = date('j', strtotime($d));
 $month = date('M', strtotime($d));
 ?>
-<a href="?movie_id=<?php echo $movieId; ?>&date=<?php echo $d; ?>" class="flex flex-col items-center justify-center min-w-[70px] md:min-w-[80px] h-[95px] rounded-2xl group relative cursor-pointer <?php echo $selected ? 'bg-primary text-white shadow-lg shadow-red-900/40 border-none' : 'bg-surface-container border border-outline-variant/30 text-zinc-400 hover:border-primary hover:text-white'; ?> transition-all duration-300 flex-shrink-0 btn-hover-fx">
+<a href="?movie_id=<?php echo $movieId; ?>&date=<?php echo $d; ?>&format=<?php echo $selectedFormat; ?>&time=<?php echo $selectedTime; ?>" class="flex flex-col items-center justify-center min-w-[70px] md:min-w-[80px] h-[95px] rounded-2xl group relative cursor-pointer <?php echo $selected ? 'bg-primary text-white shadow-lg shadow-red-900/40 border-none' : 'bg-surface-container border border-outline-variant/30 text-zinc-400 hover:border-primary hover:text-white'; ?> transition-all duration-300 flex-shrink-0 btn-hover-fx">
 <?php if ($selected): ?><div class="absolute -top-1 left-1/2 -translate-x-1/2 w-8 h-1 bg-white/50 rounded-full blur-[2px]"></div><?php endif; ?>
 <span class="text-[10px] font-black uppercase tracking-widest opacity-80 mb-1 group-hover:text-primary transition-colors <?php echo $selected ? 'text-white/80 group-hover:text-white/80' : ''; ?>"><?php echo $month; ?></span>
 <span class="text-3xl font-headline font-black leading-none drop-shadow-sm group-hover:drop-shadow-lg <?php echo $selected ? 'text-white' : 'text-zinc-200'; ?>"><?php echo $dayNum; ?></span>
@@ -59,16 +62,39 @@ $month = date('M', strtotime($d));
 <?php endforeach; ?>
 </div>
 
-<div class="hidden md:flex flex-wrap items-center gap-3 mt-4">
-<button class="bg-surface-container-high text-zinc-400 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-white hover:text-black transition-colors border border-outline-variant/30">
-    Price <span class="material-symbols-outlined text-[18px]">expand_more</span>
-</button>
-<button class="bg-surface-container-high text-zinc-400 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-white hover:text-black transition-colors border border-outline-variant/30">
-    Time <span class="material-symbols-outlined text-[18px]">expand_more</span>
-</button>
-<button class="bg-primary/20 text-primary border border-primary/50 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2">
-    All Formats <span class="material-symbols-outlined text-[18px]">close</span>
-</button>
+<div class="flex flex-wrap items-center gap-3 mt-4">
+    <!-- Format Filter -->
+    <div class="relative group">
+        <select onchange="location.href='?movie_id=<?php echo $movieId; ?>&date=<?php echo $date; ?>&time=<?php echo $selectedTime; ?>&format=' + this.value" class="appearance-none bg-surface-container-high text-zinc-400 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-white hover:text-black transition-colors border border-outline-variant/30 cursor-pointer outline-none">
+            <option value="All" <?php echo $selectedFormat == 'All' ? 'selected' : ''; ?>>All Formats</option>
+            <option value="IMAX" <?php echo $selectedFormat == 'IMAX' ? 'selected' : ''; ?>>IMAX</option>
+            <option value="4K" <?php echo $selectedFormat == '4K' ? 'selected' : ''; ?>>4K</option>
+            <option value="2D" <?php echo $selectedFormat == '2D' ? 'selected' : ''; ?>>2D</option>
+            <option value="3D" <?php echo $selectedFormat == '3D' ? 'selected' : ''; ?>>3D</option>
+        </select>
+    </div>
+
+    <!-- Time Filter -->
+    <div class="relative group">
+        <select onchange="location.href='?movie_id=<?php echo $movieId; ?>&date=<?php echo $date; ?>&format=<?php echo $selectedFormat; ?>&time=' + this.value" class="appearance-none bg-surface-container-high text-zinc-400 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-white hover:text-black transition-colors border border-outline-variant/30 cursor-pointer outline-none">
+            <option value="All" <?php echo $selectedTime == 'All' ? 'selected' : ''; ?>>All Times</option>
+            <option value="Morning" <?php echo $selectedTime == 'Morning' ? 'selected' : ''; ?>>Morning</option>
+            <option value="Afternoon" <?php echo $selectedTime == 'Afternoon' ? 'selected' : ''; ?>>Afternoon</option>
+            <option value="Evening" <?php echo $selectedTime == 'Evening' ? 'selected' : ''; ?>>Evening</option>
+            <option value="Night" <?php echo $selectedTime == 'Night' ? 'selected' : ''; ?>>Night</option>
+        </select>
+    </div>
+
+    <!-- Price (Static Info for now as user said flat 267) -->
+    <button class="bg-surface-container-high text-zinc-400 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 border border-outline-variant/30 opacity-50 cursor-default">
+        Price: <?php echo formatCurrency(267); ?>
+    </button>
+
+    <?php if ($selectedFormat !== 'All' || $selectedTime !== 'All'): ?>
+        <a href="?movie_id=<?php echo $movieId; ?>&date=<?php echo $date; ?>" class="bg-primary/20 text-primary border border-primary/50 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-primary hover:text-white transition-all">
+            Clear Filters <span class="material-symbols-outlined text-[18px]">close</span>
+        </a>
+    <?php endif; ?>
 </div>
 </div>
 </div>

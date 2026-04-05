@@ -35,7 +35,8 @@ try {
 <div class="hidden md:block md:col-span-4 lg:col-span-3 pb-8">
 <div class="group relative aspect-[2/3] w-full rounded-2xl overflow-hidden shadow-2xl shadow-black/60 transform -rotate-2 hover:rotate-0 hover:-translate-y-4 transition-all duration-500 border border-white/10">
 <img alt="Movie Poster" class="w-full h-full object-cover" src="<?php echo BASE_URL . htmlspecialchars($movie['poster_url']); ?>"/>
-<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm cursor-pointer">
+<?php if (!empty($movie['trailer_url'])): ?>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm cursor-pointer" onclick="openTrailer('<?php echo $movie['trailer_url']; ?>')">
 <button class="w-20 h-20 bg-primary/80 text-white rounded-full flex items-center justify-center transform scale-75 group-hover:scale-100 transition-all duration-500 hover:bg-primary shadow-lg shadow-red-900/50">
 <span class="material-symbols-outlined text-5xl icon-filled">play_arrow</span>
 </button>
@@ -43,6 +44,7 @@ try {
 <div class="absolute bottom-4 left-0 right-0 text-center pointer-events-none">
 <span class="bg-black/80 backdrop-blur-md text-white text-[10px] px-4 py-1.5 rounded-full uppercase tracking-widest font-bold">Watch Trailer</span>
 </div>
+<?php endif; ?>
 </div>
 </div>
 <!-- Right Column: Details -->
@@ -192,9 +194,59 @@ foreach ($movies as $similarMovie):
 </section>
 </main>
 
+<!-- Trailer Modal -->
+<div id="trailerModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-2xl opacity-0 pointer-events-none transition-all duration-500">
+    <div class="relative w-full max-w-5xl aspect-video mx-6 scale-90 transition-transform duration-500" id="modalContent">
+        <button onclick="closeTrailer()" class="absolute -top-16 right-0 text-white/60 hover:text-white transition-colors flex items-center gap-2 group">
+            <span class="text-xs font-bold uppercase tracking-widest">Close Trailer</span>
+            <span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform">close</span>
+        </button>
+        <div class="w-full h-full rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-primary/20 bg-black">
+            <iframe id="trailerFrame" class="w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+<script>
+function openTrailer(url) {
+    const modal = document.getElementById('trailerModal');
+    const frame = document.getElementById('trailerFrame');
+    const content = document.getElementById('modalContent');
+    
+    frame.src = url + "?autoplay=1";
+    modal.classList.remove('opacity-0', 'pointer-events-none');
+    setTimeout(() => content.classList.remove('scale-90'), 10);
+    document.body.style.overflow = 'hidden';
+}
+
+function closeTrailer() {
+    const modal = document.getElementById('trailerModal');
+    const frame = document.getElementById('trailerFrame');
+    const content = document.getElementById('modalContent');
+    
+    content.classList.add('scale-90');
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    setTimeout(() => {
+        frame.src = "";
+        document.body.style.overflow = 'auto';
+    }, 500);
+}
+
+// Close on Esc key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeTrailer();
+});
+</script>
+
 <style>
 .editorial-gradient {
     background: linear-gradient(to bottom, rgba(16, 16, 16, 0) 0%, rgba(16, 16, 16, 0.6) 60%, rgba(16, 16, 16, 1) 100%);
+}
+#trailerModal.opacity-0 {
+    visibility: hidden;
+}
+#trailerModal:not(.opacity-0) {
+    visibility: visible;
 }
 </style>
 

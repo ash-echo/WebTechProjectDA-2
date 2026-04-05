@@ -3,7 +3,24 @@ $pageTitle = 'Movies - CINEFLOW';
 require_once '../includes/header.php';
 require_once '../includes/functions.php';
 
-$movies = getAllMovies();
+$genre = $_GET['genre'] ?? 'All';
+$format = $_GET['format'] ?? 'All';
+$sort = $_GET['sort'] ?? 'newest';
+
+$movies = getAllMovies($genre, $format, $sort);
+
+// Get unique genres from existing movies for the filter dropdown
+$allGenresRaw = array_unique(array_column($movies, 'genre'));
+$uniqueGenres = ['All'];
+foreach ($allGenresRaw as $g) {
+    if (!$g) continue;
+    $parts = explode(',', $g);
+    foreach ($parts as $p) {
+        $trimmed = trim($p);
+        if ($trimmed && !in_array($trimmed, $uniqueGenres)) $uniqueGenres[] = $trimmed;
+    }
+}
+sort($uniqueGenres);
 ?>
 
 <main class="pt-24 pb-20 relative min-h-screen">
@@ -21,14 +38,39 @@ $movies = getAllMovies();
     Discover the latest blockbusters and timeless classics curated for the ultimate cinematic experience.
 </p>
 </div>
-<div class="flex gap-4">
-<button class="bg-surface-container-high text-zinc-100 px-6 py-4 rounded-full text-xs font-bold uppercase tracking-widest flex items-center gap-2 hover:bg-white hover:text-black transition-all btn-hover-fx border border-outline-variant/30">
-    <span class="material-symbols-outlined text-[18px]">filter_list</span> Filter
-</button>
-<button class="bg-surface-container-high text-zinc-100 px-6 py-4 rounded-full text-xs font-bold uppercase tracking-widest flex items-center gap-2 hover:bg-white hover:text-black transition-all btn-hover-fx border border-outline-variant/30">
-    <span class="material-symbols-outlined text-[18px]">sort</span> Sort
-</button>
-</div>
+<form method="GET" class="flex flex-wrap gap-4 items-center">
+    <!-- Genre Filter -->
+    <div class="relative group">
+        <select name="genre" onchange="this.form.submit()" class="appearance-none bg-surface-container-high text-zinc-100 pl-6 pr-12 py-4 rounded-full text-xs font-bold uppercase tracking-widest cursor-pointer hover:bg-white hover:text-black transition-all border border-outline-variant/30 focus:outline-none focus:border-primary">
+            <?php foreach ($uniqueGenres as $g): ?>
+                <option value="<?php echo $g; ?>" <?php echo $genre == $g ? 'selected' : ''; ?>><?php echo $g === 'All' ? 'All Genres' : $g; ?></option>
+            <?php endforeach; ?>
+        </select>
+        <span class="material-symbols-outlined absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-500 group-hover:text-black transition-colors">filter_list</span>
+    </div>
+
+    <!-- Format Filter -->
+    <div class="relative group">
+        <select name="format" onchange="this.form.submit()" class="appearance-none bg-surface-container-high text-zinc-100 pl-6 pr-12 py-4 rounded-full text-xs font-bold uppercase tracking-widest cursor-pointer hover:bg-white hover:text-black transition-all border border-outline-variant/30 focus:outline-none focus:border-primary">
+            <option value="All" <?php echo $format == 'All' ? 'selected' : ''; ?>>All Formats</option>
+            <option value="IMAX" <?php echo $format == 'IMAX' ? 'selected' : ''; ?>>IMAX</option>
+            <option value="4K" <?php echo $format == '4K' ? 'selected' : ''; ?>>4K</option>
+            <option value="2D" <?php echo $format == '2D' ? 'selected' : ''; ?>>2D</option>
+            <option value="3D" <?php echo $format == '3D' ? 'selected' : ''; ?>>3D</option>
+        </select>
+        <span class="material-symbols-outlined absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-500 group-hover:text-black transition-colors">branding_watermark</span>
+    </div>
+
+    <!-- Sort Selector -->
+    <div class="relative group">
+        <select name="sort" onchange="this.form.submit()" class="appearance-none bg-surface-container-high text-zinc-100 pl-6 pr-12 py-4 rounded-full text-xs font-bold uppercase tracking-widest cursor-pointer hover:bg-white hover:text-black transition-all border border-outline-variant/30 focus:outline-none focus:border-primary">
+            <option value="newest" <?php echo $sort == 'newest' ? 'selected' : ''; ?>>Newest First</option>
+            <option value="rating" <?php echo $sort == 'rating' ? 'selected' : ''; ?>>Top Rated</option>
+            <option value="alpha" <?php echo $sort == 'alpha' ? 'selected' : ''; ?>>Alphabetical</option>
+        </select>
+        <span class="material-symbols-outlined absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-500 group-hover:text-black transition-colors">sort</span>
+    </div>
+</form>
 </div>
 
 <!-- Movies Grid -->
