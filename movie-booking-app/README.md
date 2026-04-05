@@ -1,4 +1,4 @@
-# AUTEUR Cinema - Movie Booking System
+# CINEFLOW Cinema - Movie Booking System
 
 A modern, fully-functional movie booking web application built with PHP, MySQL, and Tailwind CSS. Features a complete booking flow from movie selection to payment confirmation.
 

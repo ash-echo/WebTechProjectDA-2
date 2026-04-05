@@ -8,7 +8,7 @@ if (isLoggedIn()) {
     exit();
 }
 
-$pageTitle = 'Login - AUTEUR Cinema';
+$pageTitle = 'Login - CINEFLOW';
 require_once '../includes/header.php';
 ?>
 
@@ -27,7 +27,7 @@ require_once '../includes/header.php';
                 Welcome Back
             </h1>
             <p class="text-zinc-400 font-medium">
-                Sign in to your AUTEUR account
+                Sign in to your CINEFLOW account
             </p>
         </div>
 
@@ -68,7 +68,7 @@ require_once '../includes/header.php';
                         </div>
                         <label for="remember" class="text-sm font-medium text-zinc-400 group-hover:text-zinc-200 transition-colors cursor-pointer">Remember me</label>
                     </div>
-                    <a href="#" class="text-sm text-primary hover:text-white transition-colors font-bold tracking-wide">Forgot password?</a>
+                    <a href="forgot_password.php" class="text-sm text-primary hover:text-white transition-colors font-bold tracking-wide">Forgot password?</a>
                 </div>
 
                 <button type="submit" id="submitBtn" class="relative w-full py-4 overflow-hidden rounded-2xl group active:scale-95 transition-all">
@@ -83,7 +83,7 @@ require_once '../includes/header.php';
 
             <div class="mt-8 text-center border-t border-outline-variant/20 pt-6">
                 <p class="text-zinc-500 text-sm">
-                    New to AUTEUR? 
+                    New to CINEFLOW? 
                     <a href="signup.php" class="text-primary font-bold hover:text-white transition-colors ml-1 uppercase tracking-widest text-xs">Create Account</a>
                 </p>
             </div>

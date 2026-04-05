@@ -4,7 +4,7 @@ require_once '../includes/auth.php';
 
 requireLogin();
 
-$pageTitle = 'Booking Confirmed - AUTEUR Cinema';
+$pageTitle = 'Booking Confirmed - CINEFLOW';
 require_once '../includes/header.php';
 
 $bookingId = isset($_GET['booking_id']) ? $_GET['booking_id'] : '';

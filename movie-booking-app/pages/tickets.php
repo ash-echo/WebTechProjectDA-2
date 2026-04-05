@@ -4,7 +4,7 @@ require_once '../includes/auth.php';
 
 requireLogin();
 
-$pageTitle = 'My Tickets - AUTEUR Cinema';
+$pageTitle = 'My Tickets - CINEFLOW';
 require_once '../includes/header.php';
 
 // Fetch booking history
@@ -56,7 +56,7 @@ try {
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
     <?php foreach ($bookings as $index => $booking): 
         // Simulated QR Code API
-        $qrData = "AUTEUR-" . $booking['id'] . "-" . $_SESSION['user_id'];
+        $qrData = "CINEFLOW-" . $booking['id'] . "-" . $_SESSION['user_id'];
         $qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . urlencode($qrData) . "&color=0-0-0&bgcolor=255-255-255";
         $isPast = strtotime($booking['show_date'] . ' ' . $booking['show_time']) < time();
     ?>
@@ -67,8 +67,8 @@ try {
                 <img src="<?php echo htmlspecialchars($booking['movie_poster']); ?>" class="w-full h-full object-cover blur-md opacity-30 transform group-hover:scale-110 transition-transform duration-700">
                 <div class="absolute inset-0 bg-gradient-to-b from-black/20 to-surface-container-low"></div>
             </div>
-            <div class="relative z-10 flex gap-6">
-                <img src="<?php echo htmlspecialchars($booking['movie_poster']); ?>" class="w-24 rounded-lg shadow-xl shadow-black border border-white/10 shrink-0 object-cover">
+            <div class="relative z-10 flex gap-6 items-center">
+                <img src="<?php echo htmlspecialchars($booking['movie_poster']); ?>" class="w-28 md:w-32 aspect-[2/3] rounded-xl shadow-2xl shadow-black border border-white/20 shrink-0 object-cover transform -rotate-3 hover:rotate-0 transition-transform duration-500">
                 <div class="flex-1 min-w-0 flex flex-col justify-center">
                     <?php if ($isPast): ?>
                         <span class="bg-zinc-800 text-zinc-400 text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded inline-block w-max mb-2">Past Event</span>

@@ -26,7 +26,7 @@ foreach ($seats as $seat) {
 ksort($rows); // Sort alphabetically A-Z
 $theaterId = $show['theater_id'];
 
-$pageTitle = 'Select Seats - AUTEUR Cinema';
+$pageTitle = 'Select Seats - CINEFLOW';
 require_once '../includes/header.php';
 ?>
 

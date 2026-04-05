@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Gift Cards - AUTEUR Cinema';
+$pageTitle = 'Gift Cards - CINEFLOW';
 require_once '../includes/header.php';
 ?>
 
@@ -12,7 +12,7 @@ require_once '../includes/header.php';
             The Gift of Cinema
         </h1>
         <p class="text-xl text-zinc-400 font-medium max-w-2xl mx-auto">
-            Give the perfect gift to the movie lovers in your life. AUTEUR Gift Cards never expire and can be used for tickets, VIP upgrades, and premier concessions.
+            Give the perfect gift to the movie lovers in your life. CINEFLOW Gift Cards never expire and can be used for tickets, VIP upgrades, and premier concessions.
         </p>
     </div>
 
@@ -32,7 +32,7 @@ require_once '../includes/header.php';
                 <h3 class="font-headline font-black text-3xl tracking-[0.2em] text-black">PHYSICAL</h3>
             </div>
             <h2 class="text-2xl font-black uppercase tracking-widest text-white mb-3">Physical Gift Cards</h2>
-            <p class="text-zinc-500 mb-8">Premium textured cards delivered by mail securely in an exclusive AUTEUR box.</p>
+            <p class="text-zinc-500 mb-8">Premium textured cards delivered by mail securely in an exclusive CINEFLOW box.</p>
             <button class="w-full px-8 py-4 bg-white text-black font-black uppercase tracking-[0.2em] text-sm rounded-xl hover:bg-zinc-200 active:scale-95 transition-all mt-auto">Order Physical Card</button>
         </div>
     </div>

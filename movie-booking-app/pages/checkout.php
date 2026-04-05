@@ -52,7 +52,7 @@ $grandTotal = $totalAmount + $serviceFee;
 // Get user info
 $user = getUserById($_SESSION['user_id']);
 
-$pageTitle = 'Checkout - AUTEUR Cinema';
+$pageTitle = 'Checkout - CINEFLOW';
 require_once '../includes/header.php';
 ?>
 

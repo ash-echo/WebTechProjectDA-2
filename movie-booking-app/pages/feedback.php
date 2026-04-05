@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Feedback - AUTEUR Cinema';
+$pageTitle = 'Feedback - CINEFLOW';
 require_once '../includes/header.php';
 ?>
 

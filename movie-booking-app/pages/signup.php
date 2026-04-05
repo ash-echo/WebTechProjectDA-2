@@ -8,7 +8,7 @@ if (isLoggedIn()) {
     exit();
 }
 
-$pageTitle = 'Sign Up - AUTEUR Cinema';
+$pageTitle = 'Sign Up - CINEFLOW Cinema';
 require_once '../includes/header.php';
 ?>
 
@@ -24,7 +24,7 @@ require_once '../includes/header.php';
                 Join the Club
             </h1>
             <p class="text-zinc-400 font-medium">
-                Create your AUTEUR account
+                Create your CINEFLOW account
             </p>
         </div>
 
@@ -92,14 +92,10 @@ require_once '../includes/header.php';
                 </div>
 
                 <div class="flex items-start gap-3 cursor-pointer group pt-2 pb-4">
-                    <div class="relative flex items-start justify-center pt-0.5">
-                        <input type="checkbox" id="terms" name="terms" required class="peer sr-only">
-                        <div class="w-5 h-5 border-2 border-outline-variant rounded bg-transparent peer-checked:bg-primary peer-checked:border-primary transition-all flex items-center justify-center">
-                            <span class="material-symbols-outlined text-white text-[14px] opacity-0 peer-checked:opacity-100 transition-opacity" style="font-variation-settings: 'wght' 700;">check</span>
-                        </div>
+                        <input type="checkbox" id="terms" name="terms" required class="w-5 h-5 accent-primary cursor-pointer">
                     </div>
                     <label for="terms" class="text-xs font-medium text-zinc-400 group-hover:text-zinc-200 transition-colors cursor-pointer leading-relaxed">
-                        I agree to the <a href="#" class="text-primary hover:text-white transition-colors">Terms of Service</a> and <a href="#" class="text-primary hover:text-white transition-colors">Privacy Policy</a>
+                        I agree to the <a href="terms.php" class="text-primary hover:text-white transition-colors">Terms of Service</a> and <a href="terms.php" class="text-primary hover:text-white transition-colors">Privacy Policy</a>
                     </label>
                 </div>
 
@@ -158,7 +154,7 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
         if (data.success) {
             showToast(data.message + '. Redirecting to login...', 'success');
             setTimeout(() => {
-                window.location.href = '<?php echo BASE_URL; ?>pages/' + data.redirect;
+                window.location.href = '<?php echo BASE_URL; ?>index.php';
             }, 1500);
         } else {
             showToast(data.message, 'error');

@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Help Center - AUTEUR Cinema';
+$pageTitle = 'Help Center - CINEFLOW';
 require_once '../includes/header.php';
 ?>
 

@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Movie Details - AUTEUR Cinema';
+$pageTitle = 'Movie Details - CINEFLOW';
 require_once '../includes/header.php';
 require_once '../includes/functions.php';
 

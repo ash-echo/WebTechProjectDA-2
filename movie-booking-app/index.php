@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'AUTEUR | Cinematic Discovery';
+$pageTitle = 'CINEFLOW | Cinematic Discovery';
 require_once 'includes/header.php';
 require_once 'includes/functions.php';
 
@@ -129,9 +129,11 @@ $featuredMovies = array_slice($movies, 0, 5);
 <h2 class="text-4xl md:text-5xl font-headline font-extrabold mb-6 text-white uppercase tracking-tighter">The Director's Cut</h2>
 <p class="text-lg text-zinc-400 mb-10 leading-relaxed font-medium">Join our exclusive cinematic community. Get early access to premieres, member-only screenings, and editorial insights delivered weekly.</p>
 <div class="flex flex-col sm:flex-row gap-4">
-<input class="flex-1 bg-surface-container border border-outline-variant/30 rounded-2xl px-6 py-4 focus:ring-1 focus:border-primary focus:ring-primary text-white placeholder-zinc-500 outline-none transition-all font-medium text-lg" placeholder="Enter your email" type="email"/>
-<button class="bg-white text-black px-8 py-4 rounded-2xl font-black btn-hover-fx text-sm uppercase tracking-[0.2em] whitespace-nowrap hover:bg-zinc-200 transition-colors">Subscribe</button>
+<input id="newsletterEmail" class="flex-1 bg-surface-container border border-outline-variant/30 rounded-2xl px-6 py-4 focus:ring-1 focus:border-primary focus:ring-primary text-white placeholder-zinc-500 outline-none transition-all font-medium text-lg" placeholder="Enter your email" type="email"/>
+<button id="subscribeBtn" class="bg-white text-black px-8 py-4 rounded-2xl font-black btn-hover-fx text-sm uppercase tracking-[0.2em] whitespace-nowrap hover:bg-zinc-200 transition-colors">Subscribe</button>
 </div>
+<div id="newsletterMessage" class="mt-4 text-sm font-bold tracking-wide transition-all opacity-0"></div>
+
 </div>
 </div>
 </section>
@@ -177,6 +179,53 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     startTimer();
+    
+    // Newsletter Subscription
+    const subscribeBtn = document.getElementById('subscribeBtn');
+    const newsletterEmail = document.getElementById('newsletterEmail');
+    const newsletterMessage = document.getElementById('newsletterMessage');
+    
+    if (subscribeBtn) {
+        subscribeBtn.addEventListener('click', function() {
+            const email = newsletterEmail.value;
+            if (!email) {
+                showToast('Please enter an email address', 'error');
+                return;
+            }
+            
+            subscribeBtn.disabled = true;
+            subscribeBtn.textContent = '...';
+            
+            const formData = new FormData();
+            formData.append('email', email);
+            
+            fetch('<?php echo BASE_URL; ?>api/subscribe.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    showToast(data.message, 'success');
+                    newsletterMessage.textContent = data.message;
+                    newsletterMessage.classList.replace('text-red-500', 'text-emerald-500');
+                    newsletterMessage.classList.replace('opacity-0', 'opacity-100');
+                    newsletterEmail.value = '';
+                } else {
+                    showToast(data.message, 'error');
+                    newsletterMessage.textContent = data.message;
+                    newsletterMessage.classList.add('text-red-500', 'opacity-100');
+                }
+            })
+            .catch(e => {
+                showToast('Network error', 'error');
+            })
+            .finally(() => {
+                subscribeBtn.disabled = false;
+                subscribeBtn.textContent = 'SUBSCRIBE';
+            });
+        });
+    }
 });
 </script>
 

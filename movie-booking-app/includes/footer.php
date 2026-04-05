@@ -45,10 +45,6 @@
     
     <div class="mt-16 px-6 md:px-12 max-w-7xl mx-auto border-t border-outline-variant/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
         <p class="text-zinc-600 text-[10px] tracking-[0.2em] uppercase font-bold">© <?php echo date('Y'); ?> CINEFLOW CINEMA. ALL RIGHTS RESERVED.</p>
-        <div class="flex items-center gap-2 group cursor-pointer">
-            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse group-hover:animate-none"></span>
-            <span class="text-zinc-400 group-hover:text-zinc-200 transition-colors text-[10px] font-bold uppercase tracking-widest">Systems Operational</span>
-        </div>
     </div>
 </footer>
 </body>

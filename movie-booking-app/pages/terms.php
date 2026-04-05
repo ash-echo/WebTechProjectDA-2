@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Terms of Service - AUTEUR Cinema';
+$pageTitle = 'Terms of Service - CINEFLOW';
 require_once '../includes/header.php';
 ?>
 
@@ -14,7 +14,7 @@ require_once '../includes/header.php';
     <div class="space-y-12 text-zinc-300 leading-relaxed font-medium">
         <section>
             <h2 class="text-xl font-bold text-white mb-4 uppercase tracking-widest">1. Acceptance of Terms</h2>
-            <p class="text-zinc-400">By accessing and using the AUTEUR Cinema website, application, or purchasing tickets, you agree to be bound by these Terms of Service. If you do not agree, please refrain from utilizing our booking engine.</p>
+            <p class="text-zinc-400">By accessing and using the CINEFLOW website, application, or purchasing tickets, you agree to be bound by these Terms of Service. If you do not agree, please refrain from utilizing our booking engine.</p>
         </section>
 
         <section>
@@ -28,7 +28,7 @@ require_once '../includes/header.php';
 
         <section>
             <h2 class="text-xl font-bold text-white mb-4 uppercase tracking-widest">3. Theater Conduct</h2>
-            <p class="text-zinc-400">AUTEUR Cinema reserves the right to deny admission or eject any person whose conduct is deemed disorderly, who uses vulgar or abusive language, or fails to comply with theater regulations. Recording video or audio inside the auditoriums is strictly prohibited by law.</p>
+            <p class="text-zinc-400">CINEFLOW reserves the right to deny admission or eject any person whose conduct is deemed disorderly, who uses vulgar or abusive language, or fails to comply with theater regulations. Recording video or audio inside the auditoriums is strictly prohibited by law.</p>
         </section>
 
         <section>

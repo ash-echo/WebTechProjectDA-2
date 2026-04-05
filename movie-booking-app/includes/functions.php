@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/db.php';
+date_default_timezone_set('Asia/Kolkata');
+
 
 // Quick migration patch to ensure DB handles locks correctly
 try {

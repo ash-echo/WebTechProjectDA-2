@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Showtimes & Theaters - AUTEUR Cinema';
+$pageTitle = 'Showtimes & Theaters - CINEFLOW';
 require_once '../includes/header.php';
 require_once '../includes/functions.php';
 
