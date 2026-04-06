@@ -48,22 +48,22 @@ try {
     // Start transaction
     $conn->beginTransaction();
 
-    // 1. Check if ANY of the requested seats are booked
+    // 1b. Check if ANY of the requested seats are SIMULATED booked
+    $simulatedSeats = getSeatStatusForShow($showId);
+    foreach ($seatIds as $sId) {
+        foreach ($simulatedSeats as $s) {
+            if ($s['id'] == $sId && $s['status'] === 'booked') {
+                $conn->rollBack();
+                echo json_encode(['success' => false, 'message' => 'One or more seats have just been booked (simulated).']);
+                exit();
+            }
+        }
+    }
+
+    // 1. Check if ANY of the requested seats are REALLY booked
     $placeholders = implode(',', array_fill(0, count($seatIds), '?'));
     $params = array_merge([$showId], $seatIds);
 
-    $stmt = $conn->prepare("
-        SELECT bd.seat_id 
-        FROM booking_details bd
-        JOIN bookings b ON bd.booking_id = b.id
-        WHERE b.show_id = ? AND b.status = 'confirmed' AND bd.seat_id IN ($placeholders)
-    ");
-    $stmt->execute($params);
-    if ($stmt->fetch()) {
-        $conn->rollBack();
-        echo json_encode(['success' => false, 'message' => 'One or more seats have just been booked by another user.']);
-        exit();
-    }
 
     // 2. Check if ANY of the requested seats are locked by OTHERS
     $stmt = $conn->prepare("

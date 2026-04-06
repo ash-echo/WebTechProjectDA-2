@@ -6,8 +6,9 @@ require_once '../includes/functions.php';
 $genre = $_GET['genre'] ?? 'All';
 $format = $_GET['format'] ?? 'All';
 $sort = $_GET['sort'] ?? 'newest';
+$search = $_GET['search'] ?? null;
 
-$movies = getAllMovies($genre, $format, $sort);
+$movies = getAllMovies($genre, $format, $sort, $search);
 
 // Get unique genres from existing movies for the filter dropdown
 $allGenresRaw = array_unique(array_column($movies, 'genre'));
@@ -31,9 +32,13 @@ sort($uniqueGenres);
 <section class="max-w-screen-2xl mx-auto px-6 md:px-12 py-12 relative z-10 animate-fly-in">
 <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-12 border-b border-outline-variant/20 pb-8">
 <div>
-<h1 class="text-5xl md:text-7xl font-headline font-black tracking-tighter uppercase text-white shadow-sm flex items-center gap-4">
-    Movies <div class="w-3 h-3 bg-primary rounded-full animate-pulse-glow mt-4"></div>
-</h1>
+    <h2 class="text-sm font-bold text-primary opacity-90 uppercase tracking-[0.3em] mb-3 flex items-center gap-3">
+        <div class="w-2 h-2 rounded-full bg-primary animate-ping"></div> 
+        <?php echo $search ? "Search Results" : "Discovery"; ?>
+    </h2>
+    <h3 class="text-5xl md:text-7xl font-headline font-black tracking-tighter text-white shadow-sm uppercase">
+        <?php echo $search ? "Matches for: " . htmlspecialchars($search) : "Universal Cinema"; ?>
+    </h3>
 <p class="text-zinc-400 text-lg md:text-xl mt-4 max-w-2xl font-medium tracking-wide">
     Discover the latest blockbusters and timeless classics curated for the ultimate cinematic experience.
 </p>

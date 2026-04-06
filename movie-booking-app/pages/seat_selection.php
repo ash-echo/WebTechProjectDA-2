@@ -170,7 +170,7 @@ require_once '../includes/header.php';
             </div>
             <div class="flex justify-between items-center text-white pt-2">
                 <span class="text-zinc-500 font-bold uppercase tracking-[0.1em] text-[10px]">Amount</span>
-                <span id="total-price" class="font-headline font-black text-3xl text-primary drop-shadow-[0_0_10px_rgba(231,26,15,0.4)]">$0.00</span>
+                <span id="total-price" class="font-headline font-black text-3xl text-primary drop-shadow-[0_0_10px_rgba(231,26,15,0.4)]">₹0</span>
             </div>
         </div>
         
@@ -233,14 +233,15 @@ function updateSummary() {
     if(selectedSeats.length > 0) {
         document.getElementById('selected-seats-list').textContent = selectedSeats.map(s => s.name).join(', ');
         totalPrice = selectedSeats.reduce((sum, s) => sum + s.price, 0);
-        document.getElementById('total-price').textContent = '$' + totalPrice.toFixed(2);
+        document.getElementById('total-price').textContent = '₹' + totalPrice.toFixed(0);
         
         proceedBtn.disabled = false;
         proceedBtn.classList.remove('bg-surface-container-highest', 'text-zinc-600', 'border-outline-variant/10', 'shadow-none');
         proceedBtn.classList.add('bg-primary', 'text-white', 'border-transparent', 'hover:brightness-110', 'shadow-[0_10px_30px_rgba(231,26,15,0.4)]');
     } else {
         document.getElementById('selected-seats-list').textContent = '-';
-        document.getElementById('total-price').textContent = '$0.00';
+        document.getElementById('total-price').textContent = '₹0';
+
         
         proceedBtn.disabled = true;
         proceedBtn.classList.add('bg-surface-container-highest', 'text-zinc-600', 'border-outline-variant/10', 'shadow-none');

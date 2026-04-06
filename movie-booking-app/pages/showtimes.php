@@ -167,8 +167,9 @@ $theaterIndex++;
 
 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
 <?php foreach ($theater['shows'] as $show): 
-// Mock some filling fast status (e.g. if hour > 18)
-$isFastFilling = (int)date('H', strtotime($show['show_time'])) >= 18;
+// Use simulated occupancy to determine "Fast Filling" status
+$occupancy = getShowOccupancy($show['id']);
+$isFastFilling = $occupancy >= 50; 
 $borderColor = $isFastFilling ? 'border-orange-500/30 hover:border-orange-500/80' : 'border-outline-variant/30 hover:border-primary/80';
 $bgColor = $isFastFilling ? 'hover:bg-orange-500/5' : 'hover:bg-primary/5';
 $timeColor = $isFastFilling ? 'text-orange-500' : 'text-white';

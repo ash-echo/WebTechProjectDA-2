@@ -6,6 +6,7 @@ require_once 'includes/functions.php';
 // Get featured movies (first 5)
 $movies = getAllMovies();
 $featuredMovies = array_slice($movies, 0, 5);
+$rentableMovies = getRentableMovies();
 ?>
 
 <main class="pt-20">
@@ -118,6 +119,47 @@ $featuredMovies = array_slice($movies, 0, 5);
         <?php endforeach; ?>
     </div>
 </section>
+
+</section>
+
+<!-- CineFlow Premiere (Rentals) -->
+<?php if (!empty($rentableMovies)): ?>
+<section class="max-w-screen-2xl mx-auto px-6 md:px-12 py-24 bg-surface-container-lowest rounded-[4rem] border border-white/5 my-12 relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+    
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-16 relative z-10">
+        <div class="space-y-4">
+            <h2 class="text-xs font-black text-primary uppercase tracking-[0.4em] flex items-center gap-3">
+                <span class="material-symbols-outlined text-sm icon-filled">workspace_premium</span> CINEFLOW PREMIERE
+            </h2>
+            <h3 class="text-5xl md:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none">Own the Experience</h3>
+            <p class="text-zinc-400 text-lg font-medium max-w-xl">Rent the latest global blockbusters. Watch anywhere, anytime in stunning 4K with Dolby Atmos.</p>
+        </div>
+        <a href="<?php echo BASE_URL; ?>pages/rent.php" class="bg-white text-black px-10 py-4 rounded-full font-black text-sm uppercase tracking-widest hover:bg-primary hover:text-white transition-all btn-hover-fx mt-8 md:mt-0">Browse Store</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
+        <?php foreach ($rentableMovies as $rentMovie): ?>
+        <div class="group relative aspect-[16/9] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+            <img src="<?php echo BASE_URL . htmlspecialchars($rentMovie['backdrop_url']); ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+            
+            <div class="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-primary/20 text-primary border border-primary/30 px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase">Digital Premiere</span>
+                    <span class="text-white/60 text-[10px] font-bold uppercase tracking-widest"><?php echo htmlspecialchars($rentMovie['format']); ?> • <?php echo $rentMovie['duration']; ?> MIN</span>
+                </div>
+                <h4 class="text-3xl md:text-5xl font-headline font-black text-white uppercase tracking-tighter mb-6"><?php echo htmlspecialchars($rentMovie['title']); ?></h4>
+                <div class="flex items-center gap-4">
+                    <a href="<?php echo BASE_URL; ?>pages/movie_details.php?id=<?php echo $rentMovie['id']; ?>" class="bg-primary text-white px-8 py-3.5 rounded-full font-black text-xs uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-primary/20">Rent ₹<?php echo number_format($rentMovie['rent_price'], 0); ?></a>
+                    <a href="<?php echo BASE_URL; ?>pages/movie_details.php?id=<?php echo $rentMovie['id']; ?>" class="bg-white/10 backdrop-blur-md text-white border border-white/10 px-8 py-3.5 rounded-full font-black text-xs uppercase tracking-widest hover:bg-white/20 transition-all">Details</a>
+                </div>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
+</section>
+<?php endif; ?>
 
 <!-- Newsletter / Editorial CTA -->
 <section class="max-w-screen-2xl mx-auto px-6 md:px-12 py-20 pb-32">

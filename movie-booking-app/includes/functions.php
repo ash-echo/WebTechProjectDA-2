@@ -17,8 +17,8 @@ try {
     // Ignore if table doesn't exist yet
 }
 
-// Get movies with optional filtering and sorting
-function getAllMovies($genre = null, $format = null, $sort = 'newest') {
+// Get movies with optional filtering, sorting, and search
+function getAllMovies($genre = null, $format = null, $sort = 'newest', $searchTerm = null) {
     try {
         $conn = getDBConnection();
         $query = "SELECT * FROM movies WHERE 1=1";
@@ -31,6 +31,10 @@ function getAllMovies($genre = null, $format = null, $sort = 'newest') {
         if ($format && $format !== 'All') {
             $query .= " AND format = ?";
             $params[] = $format;
+        }
+        if ($searchTerm) {
+            $query .= " AND title LIKE ?";
+            $params[] = "%$searchTerm%";
         }
 
         switch ($sort) {
@@ -104,10 +108,20 @@ function getShowById($showId) {
     } catch (Exception $e) { return null; }
 }
 
-// Get seat status for a show
+// Get predicted occupancy percentage for a show (Deterministic Random)
+function getShowOccupancy($showId) {
+    // We use the show_id as a seed so it's consistent on refresh
+    mt_srand($showId);
+    // Return a percentage between 15% and 75%
+    return mt_rand(15, 75);
+}
+
+// Get seat status for a show with simulated pre-filling
 function getSeatStatusForShow($showId) {
     try {
         $conn = getDBConnection();
+        $occupancyPercent = getShowOccupancy($showId);
+        
         $stmt = $conn->prepare("
             SELECT s.id, s.seat_row, s.seat_number, s.seat_type,
                    CASE
@@ -125,7 +139,21 @@ function getSeatStatusForShow($showId) {
             ORDER BY s.seat_row DESC, s.seat_number ASC
         ");
         $stmt->execute([$showId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $seats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Re-seed with showId to ensure the seat selection is also deterministic
+        mt_srand($showId);
+        foreach ($seats as &$seat) {
+            if ($seat['status'] === 'available') {
+                // If the random number is within our occupancy threshold, mark as booked
+                if (mt_rand(1, 100) <= $occupancyPercent) {
+                    $seat['status'] = 'booked';
+                    $seat['is_simulated'] = true;
+                }
+            }
+        }
+        
+        return $seats;
     } catch (Exception $e) { return []; }
 }
 
@@ -188,5 +216,65 @@ function getBookingDetails($bookingId) {
 // Generate unique booking ID
 function generateBookingId() {
     return 'BK-' . strtoupper(substr(uniqid(), -6)) . rand(10, 99);
+}
+// Get all rentable movies with optional search
+function getRentableMovies($searchTerm = null) {
+    try {
+        $conn = getDBConnection();
+        $query = "SELECT * FROM movies WHERE is_rentable = 1";
+        $params = [];
+        
+        if ($searchTerm) {
+            $query .= " AND title LIKE ?";
+            $params[] = "%$searchTerm%";
+        }
+        
+        $query .= " ORDER BY title ASC";
+        
+        $stmt = $conn->prepare($query);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) { return []; }
+}
+
+// Check if a user has rented a specific movie
+function isMovieRented($movieId, $userId) {
+    if (!$userId) return false;
+    try {
+        $conn = getDBConnection();
+        $stmt = $conn->prepare("SELECT id FROM movie_rentals WHERE movie_id = ? AND user_id = ? AND status = 'active' AND (expires_at IS NULL OR expires_at > NOW())");
+        $stmt->execute([$movieId, $userId]);
+        return (bool)$stmt->fetch();
+    } catch (Exception $e) { return false; }
+}
+
+// Get all active rentals for a user
+function getUserRentals($userId) {
+    if (!$userId) return [];
+    try {
+        $conn = getDBConnection();
+        $stmt = $conn->prepare("
+            SELECT r.*, m.title, m.poster_url, m.backdrop_url, m.duration, m.genre
+            FROM movie_rentals r
+            JOIN movies m ON r.movie_id = m.id
+            WHERE r.user_id = ? AND r.status = 'active' AND (r.expires_at IS NULL OR r.expires_at > NOW())
+            ORDER BY r.rented_at DESC
+        ");
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) { return []; }
+}
+
+// Process a move rental
+function rentMovie($movieId, $userId) {
+    try {
+        $conn = getDBConnection();
+        // Standard rental: 48 hours
+        $stmt = $conn->prepare("INSERT INTO movie_rentals (user_id, movie_id, expires_at) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 48 HOUR))");
+        return $stmt->execute([$userId, $movieId]);
+    } catch (Exception $e) { 
+        error_log("Rental Error: " . $e->getMessage());
+        return false; 
+    }
 }
 ?>

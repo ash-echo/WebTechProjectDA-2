@@ -160,15 +160,21 @@ if (!defined('BASE_URL')) {
             <a href="<?php echo BASE_URL; ?>index.php" class="text-2xl font-black tracking-tighter text-red-600 uppercase font-headline hover:scale-105 transition-transform origin-left">CINEFLOW</a>
             
             <!-- Search Bar (Desktop) -->
-            <div class="hidden lg:flex items-center bg-surface-container px-4 py-2.5 rounded-full min-w-[320px] group focus-within:ring-2 ring-primary/50 transition-all border border-outline-variant/30 focus-within:bg-zinc-900 shadow-inner">
+            <?php 
+                $currentFile = basename($_SERVER['PHP_SELF']);
+                $searchAction = ($currentFile === 'rent.php') ? BASE_URL . 'pages/rent.php' : BASE_URL . 'pages/movies.php';
+            ?>
+            <form action="<?php echo $searchAction; ?>" method="GET" class="hidden lg:flex items-center bg-surface-container px-4 py-2.5 rounded-full min-w-[320px] group focus-within:ring-2 ring-primary/50 transition-all border border-outline-variant/30 focus-within:bg-zinc-900 shadow-inner">
                 <span class="material-symbols-outlined text-zinc-500 mr-2 group-focus-within:text-primary transition-colors">search</span>
-                <input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder-zinc-500 text-on-surface px-0 outline-none" placeholder="Search movies, theaters..." type="text"/>
-            </div>
+                <input name="search" class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder-zinc-500 text-on-surface px-0 outline-none" placeholder="Search movies..." type="text" value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>"/>
+                <button type="submit" class="hidden"></button>
+            </form>
         </div>
         
         <!-- Navigation Links -->
         <div class="hidden md:flex items-center gap-8">
             <a class="nav-link text-zinc-300 hover:text-white font-medium font-['Inter'] text-sm uppercase tracking-wide transition-colors <?php echo strpos($_SERVER['REQUEST_URI'], 'movies.php') !== false ? 'active text-white' : ''; ?>" href="<?php echo BASE_URL; ?>pages/movies.php">Movies</a>
+            <a class="nav-link text-zinc-300 hover:text-white font-medium font-['Inter'] text-sm uppercase tracking-wide transition-colors <?php echo strpos($_SERVER['REQUEST_URI'], 'rent.php') !== false ? 'active text-white' : ''; ?>" href="<?php echo BASE_URL; ?>pages/rent.php">Rent Movies</a>
             <?php if (isset($_SESSION['user_id'])): ?>
             <a class="nav-link text-zinc-300 hover:text-white font-medium font-['Inter'] text-sm uppercase tracking-wide transition-colors <?php echo strpos($_SERVER['REQUEST_URI'], 'tickets.php') !== false ? 'active text-white' : ''; ?>" href="<?php echo BASE_URL; ?>pages/tickets.php">My Tickets</a>
             <?php endif; ?>
@@ -185,6 +191,9 @@ if (!defined('BASE_URL')) {
                     <div class="absolute right-0 top-full mt-2 w-48 glass-panel rounded-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right group-hover:translate-y-0 translate-y-2">
                         <a href="<?php echo BASE_URL; ?>pages/tickets.php" class="flex items-center gap-3 px-4 py-2 hover:bg-white/10 transition-colors text-sm">
                             <span class="material-symbols-outlined text-sm">confirmation_number</span> My Tickets
+                        </a>
+                         <a href="<?php echo BASE_URL; ?>pages/my_rentals.php" class="flex items-center gap-3 px-4 py-2 hover:bg-white/10 transition-colors text-sm">
+                            <span class="material-symbols-outlined text-sm">movie_filter</span> My Rentals
                         </a>
                         <div class="h-px bg-white/10 my-1"></div>
                         <a href="<?php echo BASE_URL; ?>pages/logout.php" class="flex items-center gap-3 px-4 py-2 hover:bg-white/10 transition-colors text-sm text-red-400">
@@ -204,8 +213,10 @@ if (!defined('BASE_URL')) {
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-outline-variant/30 flex flex-col gap-4 p-6 absolute w-full top-full left-0 animate-fly-in">
         <a href="<?php echo BASE_URL; ?>pages/movies.php" class="text-lg font-bold">Movies</a>
+        <a href="<?php echo BASE_URL; ?>pages/rent.php" class="text-lg font-bold">Rent Movies</a>
         <?php if (isset($_SESSION['user_id'])): ?>
             <a href="<?php echo BASE_URL; ?>pages/tickets.php" class="text-lg font-bold text-primary">My Tickets</a>
+            <a href="<?php echo BASE_URL; ?>pages/my_rentals.php" class="text-lg font-bold text-tertiary">My Rentals</a>
             <a href="<?php echo BASE_URL; ?>pages/logout.php" class="text-lg font-bold text-zinc-500">Logout</a>
         <?php endif; ?>
     </div>

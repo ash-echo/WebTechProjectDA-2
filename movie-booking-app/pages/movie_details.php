@@ -19,6 +19,11 @@ try {
     $upcomingShows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $hasShows = count($upcomingShows) > 0;
 } catch (Exception $e) { $hasShows = false; }
+
+$isRented = false;
+if (isset($_SESSION['user_id'])) {
+    $isRented = isMovieRented($movieId, $_SESSION['user_id']);
+}
 ?>
 
 <main class="relative pt-0 min-h-screen">
@@ -81,7 +86,29 @@ try {
 </div>
 
 <div class="flex flex-wrap items-center gap-4 mt-6">
+<?php if ($isRented): ?>
+<a href="<?php echo BASE_URL; ?>pages/watch.php?id=<?php echo $movie['id']; ?>" class="relative overflow-hidden group bg-emerald-500 text-white px-10 py-5 rounded-full font-headline font-black text-lg tracking-widest uppercase shadow-xl shadow-emerald-900/40 hover:scale-105 active:scale-95 transition-all">
+    <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+    <span class="relative flex items-center gap-3">
+        <span class="material-symbols-outlined">play_circle</span>
+        Watch Now
+    </span>
+</a>
+<?php elseif ($movie['is_rentable']): ?>
+<a href="<?php echo BASE_URL; ?>pages/rent_checkout.php?id=<?php echo $movie['id']; ?>" class="relative overflow-hidden group bg-white text-black px-10 py-5 rounded-full font-headline font-black text-lg tracking-widest uppercase shadow-xl shadow-white/10 hover:scale-105 active:scale-95 transition-all">
+    <div class="absolute inset-0 bg-primary/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+    <span class="relative flex items-center gap-3">
+        <span class="material-symbols-outlined">movie_filter</span>
+        Rent for ₹<?php echo number_format($movie['rent_price'], 0); ?>
+    </span>
+</a>
 <?php if ($hasShows): ?>
+<a href="<?php echo BASE_URL; ?>pages/showtimes.php?movie_id=<?php echo $movie['id']; ?>" class="relative overflow-hidden group border-2 border-primary/50 text-white px-8 py-4 rounded-full font-headline font-black text-sm tracking-widest uppercase hover:bg-primary/10 transition-all flex items-center gap-2">
+    Book Tickets
+</a>
+<?php endif; ?>
+
+<?php elseif ($hasShows): ?>
 <a href="<?php echo BASE_URL; ?>pages/showtimes.php?movie_id=<?php echo $movie['id']; ?>" class="relative overflow-hidden group bg-primary text-white px-10 py-5 rounded-full font-headline font-black text-lg tracking-widest uppercase shadow-xl shadow-red-900/40 hover:scale-105 active:scale-95 transition-all">
     <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
     <span class="relative flex items-center gap-3">
@@ -94,12 +121,15 @@ try {
     No Shows Available
 </button>
 <?php endif; ?>
-<button class="w-16 h-16 rounded-full glass-panel flex items-center justify-center text-white hover:bg-red-500/20 hover:text-red-500 hover:border-red-500/50 transition-all btn-hover-fx group">
-<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">favorite</span>
-</button>
-<button class="w-16 h-16 rounded-full glass-panel flex items-center justify-center text-white hover:bg-blue-500/20 hover:text-blue-400 hover:border-blue-500/50 transition-all btn-hover-fx group">
-<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">share</span>
-</button>
+    <!-- Like Button -->
+    <button id="likeBtn" onclick="toggleLike(<?php echo $movieId; ?>)" class="w-16 h-16 rounded-full glass-panel flex items-center justify-center text-white hover:bg-red-500/20 hover:text-red-500 hover:border-red-500/50 transition-all btn-hover-fx group">
+        <span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">favorite</span>
+    </button>
+    
+    <!-- Share Button -->
+    <button onclick="shareMovie()" class="w-16 h-16 rounded-full glass-panel flex items-center justify-center text-white hover:bg-blue-500/20 hover:text-blue-400 hover:border-blue-500/50 transition-all btn-hover-fx group">
+        <span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">share</span>
+    </button>
 </div>
 </div>
 </div>
@@ -232,9 +262,54 @@ function closeTrailer() {
     }, 500);
 }
 
-// Close on Esc key
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeTrailer();
+// Like Logic
+window.toggleLike = function(id) {
+    const btn = document.getElementById('likeBtn');
+    const icon = btn.querySelector('.material-symbols-outlined');
+    let likedMovies = JSON.parse(localStorage.getItem('cineflow_likes') || '[]');
+    
+    const index = likedMovies.indexOf(id);
+    if (index === -1) {
+        likedMovies.push(id);
+        icon.classList.add('icon-filled');
+        btn.classList.add('text-red-500', 'border-red-500/50', 'bg-red-500/10', 'shadow-[0_0_20px_rgba(239,68,68,0.3)]');
+        showToast('Added to your favorites!', 'success');
+    } else {
+        likedMovies.splice(index, 1);
+        icon.classList.remove('icon-filled');
+        btn.classList.remove('text-red-500', 'border-red-500/50', 'bg-red-500/10', 'shadow-[0_0_20px_rgba(239,68,68,0.3)]');
+        showToast('Removed from favorites', 'info');
+    }
+    
+    localStorage.setItem('cineflow_likes', JSON.stringify(likedMovies));
+};
+
+// Share Logic
+window.shareMovie = function() {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+        showToast('🎬 Movie link copied to clipboard!', 'success');
+    }).catch(err => {
+        showToast('Could not copy link', 'error');
+    });
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Escape key for trailer
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeTrailer();
+    });
+
+    // Initial State Check for Likes
+    const likedMovies = JSON.parse(localStorage.getItem('cineflow_likes') || '[]');
+    if (likedMovies.includes(<?php echo $movieId; ?>)) {
+        const btn = document.getElementById('likeBtn');
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (btn && icon) {
+            icon.classList.add('icon-filled');
+            btn.classList.add('text-red-500', 'border-red-500/50', 'bg-red-500/10', 'shadow-[0_0_20px_rgba(239,68,68,0.3)]');
+        }
+    }
 });
 </script>
 
